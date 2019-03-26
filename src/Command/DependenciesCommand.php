@@ -45,7 +45,7 @@ class DependenciesCommand extends Command
         } 
     
         if (!$docker->isSupported()) {
-            $io->error(sprintf('Please update your version of Docker. Using %s, needed at least 18.09.3', $$docker->getVersion()));
+            $io->error(sprintf('Please update your version of Docker. Using %s, needed at least %s', $docker->getVersion(), Docker::MINIMUM_VERSION));
         
             return $docker;
         }

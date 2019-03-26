@@ -8,7 +8,7 @@ use Composer\Semver\Comparator;
 
 final class Docker implements ApplicationInterface
 {
-    const MINIMUM_VERSION = '18.09.3';
+    const MINIMUM_VERSION = '18.03.0';
 
     /** @var null|string */
     private $version = null;

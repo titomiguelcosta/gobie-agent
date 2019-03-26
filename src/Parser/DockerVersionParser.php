@@ -74,12 +74,9 @@ class DockerVersionParser
 
             if (DockerVersionLexer::T_VERSION_NUMBER === $this->lexer->lookahead['type']) {
                 $this->version = $this->lexer->lookahead['value'][0];
-                // skip all the 3 tokens for the version                
-                $this->lexer->moveNext();
-                $this->lexer->moveNext();
-                $this->lexer->moveNext();
-                $this->lexer->moveNext();
-                
+                // skip all version tokens
+                $this->lexer->skipUntil(DockerVersionLexer::T_COMMA);
+
                 if ($this->lexer->isNextToken(DockerVersionLexer::T_COMMA)) {
                     $this->lexer->moveNext();
                 }

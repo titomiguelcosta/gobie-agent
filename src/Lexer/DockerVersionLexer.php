@@ -14,7 +14,7 @@ class DockerVersionLexer extends AbstractLexer
     const T_VERSION_KEYWORD = 5;
     const T_BUILD_KEYWORD = 6;
 
-    const REGEX_VERSION = '([0-9]+)\.([0-9]+)\.([0-9]+)';
+    const REGEX_VERSION = '([0-9]+)\.([0-9]+)\.([0-9]+(\-[a-z]+)?)';
     const REGEX_BUILD = '([a-z0-9]+)';
 
     /**
