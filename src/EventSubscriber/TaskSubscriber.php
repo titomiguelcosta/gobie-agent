@@ -14,7 +14,7 @@ class TaskSubscriber implements EventSubscriberInterface
         $tasks = $event->getProject()->getTasks();
 
         foreach ($tasks as $task) {
-            printf("Executing tasks %s by running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL); 
+            printf("Executing tasks %s by running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
         }
     }
 
