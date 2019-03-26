@@ -18,9 +18,7 @@ class DockerVersionLexer extends AbstractLexer
     const REGEX_BUILD = '([a-z0-9]+)';
 
     /**
-     * Creates a new query scanner object.
-     *
-     * @param string $input a query string
+     * @param string $input version output
      */
     public function __construct($input)
     {
@@ -28,7 +26,7 @@ class DockerVersionLexer extends AbstractLexer
     }
 
     /**
-     * Lexical catchable patterns.
+     * Lexical catchable patterns
      *
      * @return array
      */
@@ -45,7 +43,7 @@ class DockerVersionLexer extends AbstractLexer
     }
 
     /**
-     * Lexical non-catchable patterns.
+     * Lexical non-catchable patterns
      *
      * @return array
      */
@@ -58,7 +56,7 @@ class DockerVersionLexer extends AbstractLexer
     }
 
     /**
-     * Retrieve token type. Also processes the token value if necessary.
+     * Retrieve token type. Also processes the token value if necessary
      *
      * @param string $value
      * @return integer
@@ -74,7 +72,6 @@ class DockerVersionLexer extends AbstractLexer
                 case ',' == $value:
                     return self::T_COMMA;
                 case 'build' == $value;
-
                     return self::T_BUILD_KEYWORD;
                 case preg_match('/^'.self::REGEX_VERSION.'$/', $value, $matches):
                     // get major, minor and patch versions assigned to the value
