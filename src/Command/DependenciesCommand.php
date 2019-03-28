@@ -36,7 +36,7 @@ class DependenciesCommand extends Command
      */
     protected function checkDocker(SymfonyStyle $io): Docker
     {
-        $docker = new Docker();
+        $docker = new Docker('grooming-chimps-debugging');
 
         if (!$docker->isInstalled()) {
             $io->error("Docker is not installed");

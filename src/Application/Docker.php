@@ -6,6 +6,9 @@ use Symfony\Component\Process\Process;
 use App\Parser\DockerVersionParser;
 use Composer\Semver\Comparator;
 
+/**
+ * By design, one object per docker container
+ */
 final class Docker implements ApplicationInterface
 {
     const MINIMUM_VERSION = '18.03.0';
@@ -22,16 +25,24 @@ final class Docker implements ApplicationInterface
     /** @var bool */
     private $isSupported = false;
 
-    /**
-     * @var Process
-     */
+    /** @var Process */
     private $process = null;
 
-    /** @var array */
-    private $instances = [];
+    /** @var string */
+    private $name;
 
-    public function __construct()
+    /** @var string */
+    private $image;
+
+    /**
+     * @param string $name Name of the container
+     * @param string $image Docker image
+     */
+    public function __construct(string $name, string $image = 'titomiguelcosta/grooming-chimps-php73')
     {
+        $this->name = $name;
+        $this->image = $image;
+
         $process = new Process(['docker', '--version']);
         $process->run();
 
@@ -97,19 +108,81 @@ final class Docker implements ApplicationInterface
     }
 
     /**
-     * @param string $image
-     * @param string $name
      * @param array $options
-     * @return Process
+     * @return bool
      */
-    public function run(string $image, ? string $name = null, array $options = []): Process
+    public function run(array $options = []): bool
     {
         if (!$this->isRunning()) {
-            $command = ['docker', 'run', '--name', $name, '-t', $image, ];
-            $this->process = new Process(array_merge($command, $options));
-            $this->process->start();
+            // pull image before attempting to run
+            $process = new Process([
+                'docker',
+                'pull',
+                $this->image
+            ]);
+            $process->setTimeout(null);
+            $process->run(function ($type, $buffer) {
+                if (Process::ERR === $type) {
+                    echo 'ERR > ' . $buffer;
+                } else {
+                    echo 'OUT > ' . $buffer;
+                }
+            });
+
+            if ($process->isSuccessful()) {
+                // run container
+                $command = ['docker', 'run', '--name', $this->name, '-t', $this->image, ];
+                $this->process = new Process(array_merge($command, $options));
+                $this->process->setTimeout(null);
+                $this->process->setIdleTimeout(null);
+                $this->process->start();
+            }
         }
 
-        return $this->process;
+        return $this->isRunning();
+    }
+
+    /**
+     * @param array $options
+     * @return bool
+     */
+    public function stop(array $options = []): bool
+    {
+        if ($this->isRunning()) {
+            $command = array_merge([
+                'docker',
+                'stop',
+                '--name',
+                $this->name
+            ], $options);
+            $process = new Process($command);
+            $process->run();
+            $this->process->stop();
+        }
+
+        return !$this->isRunning();
+    }
+
+    /**
+     * @param array $options
+     * @return bool
+     */
+    public function destroy(array $options = []): bool
+    {
+        if ($this->isRunning()) {
+            $command = array_merge([
+                'docker',
+                'rmi',
+                '--name',
+                $this->name
+            ], $options);
+            $process = new Process($command);
+            $process->run();
+
+            $this->process->signal(SIGKILL);
+            $this->process = null;
+        }
+
+        return !$this->process->isRunning();
     }
 }
