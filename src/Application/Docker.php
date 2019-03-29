@@ -38,10 +38,11 @@ final class Docker implements ApplicationInterface
      * @param string $name Name of the container
      * @param string $image Docker image
      */
-    public function __construct(string $name, string $image = 'titomiguelcosta/grooming-chimps-php73')
+    public function __construct(string $name, string $image = 'titomiguelcosta/grooming-chimps-php73', string $path = null)
     {
         $this->name = $name;
         $this->image = $image;
+        $this->path = null === $path ? \sys_get_temp_dir() : $path;
 
         $process = new Process(['docker', '--version']);
         $process->run();
@@ -131,11 +132,24 @@ final class Docker implements ApplicationInterface
 
             if ($process->isSuccessful()) {
                 // run container
-                $command = ['docker', 'run', '--name', $this->name, '-t', $this->image, ];
+                $command = [
+                    'docker',
+                    'run',
+                    '-p', '7000:7000',
+                    '-v', $this->path . ':/project',
+                    '--name', $this->name,
+                    '-t', $this->image,
+                ];
                 $this->process = new Process(array_merge($command, $options));
                 $this->process->setTimeout(null);
                 $this->process->setIdleTimeout(null);
-                $this->process->start();
+                $this->process->start(function ($type, $buffer) {
+                    if (Process::ERR === $type) {
+                        echo 'ERR > ' . $buffer;
+                    } else {
+                        echo 'OUT > ' . $buffer;
+                    }
+                });
             }
         }
 
@@ -152,7 +166,8 @@ final class Docker implements ApplicationInterface
             $command = array_merge([
                 'docker',
                 'stop',
-                '--name',
+                '--time',
+                '30',
                 $this->name
             ], $options);
             $process = new Process($command);
@@ -173,6 +188,7 @@ final class Docker implements ApplicationInterface
             $command = array_merge([
                 'docker',
                 'rmi',
+                '--force',
                 '--name',
                 $this->name
             ], $options);
@@ -183,6 +199,6 @@ final class Docker implements ApplicationInterface
             $this->process = null;
         }
 
-        return !$this->process->isRunning();
+        return !$this->isRunning();
     }
 }
