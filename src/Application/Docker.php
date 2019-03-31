@@ -34,6 +34,12 @@ final class Docker implements ApplicationInterface
     /** @var string */
     private $image;
 
+    /** @var string */
+    private $path;
+
+    /** @var string */
+    private $containerId = null;
+
     /**
      * @param string $name Name of the container
      * @param string $image Docker image
@@ -121,14 +127,7 @@ final class Docker implements ApplicationInterface
                 'pull',
                 $this->image
             ]);
-            $process->setTimeout(null);
-            $process->run(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    echo 'ERR > ' . $buffer;
-                } else {
-                    echo 'OUT > ' . $buffer;
-                }
-            });
+            $this->doRun($process);
 
             if ($process->isSuccessful()) {
                 // run container
@@ -141,15 +140,15 @@ final class Docker implements ApplicationInterface
                     '-t', $this->image,
                 ];
                 $this->process = new Process(array_merge($command, $options));
-                $this->process->setTimeout(null);
-                $this->process->setIdleTimeout(null);
-                $this->process->start(function ($type, $buffer) {
-                    if (Process::ERR === $type) {
-                        echo 'ERR > ' . $buffer;
-                    } else {
-                        echo 'OUT > ' . $buffer;
-                    }
-                });
+                $this->doRun($this->process, true);
+
+                // determine container id
+                $command = sprintf('docker ps -aqf "name=%s"', $this->name);
+                $process = new Process($command);
+                do {
+                    $this->doRun($process);
+                    $this->containerId = $process->getOutput();
+                } while (!$this->containerId && $this->isRunning());
             }
         }
 
@@ -157,21 +156,15 @@ final class Docker implements ApplicationInterface
     }
 
     /**
-     * @param array $options
      * @return bool
      */
-    public function stop(array $options = []): bool
+    public function stop(): bool
     {
         if ($this->isRunning()) {
-            $command = array_merge([
-                'docker',
-                'stop',
-                '--time',
-                '30',
-                $this->name
-            ], $options);
+            $command = sprintf('docker stop --time 30 %s', $this->containerId);
             $process = new Process($command);
-            $process->run();
+            $this->doRun($process);
+
             $this->process->stop();
         }
 
@@ -182,23 +175,68 @@ final class Docker implements ApplicationInterface
      * @param array $options
      * @return bool
      */
-    public function destroy(array $options = []): bool
+    public function destroy(bool $image = false): bool
     {
         if ($this->isRunning()) {
-            $command = array_merge([
-                'docker',
-                'rmi',
-                '--force',
-                '--name',
-                $this->name
-            ], $options);
-            $process = new Process($command);
-            $process->run();
+            $this->stop();
 
-            $this->process->signal(SIGKILL);
+            // destroy container
+            $command = sprintf('docker rm %s', $this->containerId);
+            $process = new Process($command);
+            $this->doRun($process);
+
+            if ($image) {
+                // check process is running before forcing exit
+                if ($this->isRunning()) {
+                    $this->process->signal(SIGKILL);
+                }
+
+                // if not running, attempt to delete image
+                if (!$this->isRunning()) {
+                    $command = sprintf('docker rmi %s --force', $this->containerId);
+                    $process = new Process($command);
+                    $this->doRun($process);
+                }
+            }
+
             $this->process = null;
         }
 
         return !$this->isRunning();
+    }
+
+    /**
+     * @param string $command
+     * @return Process|null
+     */
+    public function exec(string $command): ? Process
+    {
+        if ($this->isRunning()) {
+            $command = sprintf('docker exec -i %s %s', $this->name, $command);
+            $process = new Process($command);
+            $this->doRun($process);
+
+            return $process;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param Process $process
+     */
+    private function doRun(Process $process, bool $start = false): void
+    {
+        $output = function ($type, $buffer) {
+            if (Process::ERR === $type) {
+                echo 'ERR > ' . $buffer;
+            } else {
+                echo 'OUT > ' . $buffer;
+            }
+        };
+        $process->setTimeout(null);
+        $process->setIdleTimeout(null);
+
+        $start ? $process->start($output) : $process->run($output);
     }
 }

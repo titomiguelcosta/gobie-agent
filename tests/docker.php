@@ -9,13 +9,10 @@ $docker->run();
 
 echo $docker->isRunning() ? 'Running' : 'Stopped';
 echo $docker->getProcess()->getPid();
-
-// sleep(3);
-// echo $docker->stop() ? 'Stopped' : 'Running';
-
 echo $docker->getProcess()->getOutput();
-echo $docker->getProcess()->getErrorOutput();
-sleep(20);
-echo $docker->getProcess()->getOutput();
-echo $docker->getProcess()->getErrorOutput();
+
+echo "Sleeping before executing command";
+$process = $docker->exec('ls -al');
+echo $process->getOutput();
+
 echo $docker->destroy() ? 'Stopped' : 'Running';
