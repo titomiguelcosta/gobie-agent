@@ -2,28 +2,21 @@
 
 namespace App\Lexer;
 
-use Doctrine\Common\Lexer\AbstractLexer;
+use App\Model\Version;
 
-class DockerVersionLexer extends AbstractLexer
+class DockerVersionLexer extends BaseLexer
 {
     const T_NONE = 0;
-    const T_VERSION_NUMBER = 1;
-    const T_BUILD_NUMBER = 2;
-    const T_COMMA = 3;
-    const T_DOCKER_KEYWORD = 4;
-    const T_VERSION_KEYWORD = 5;
+    const T_DOCKER_KEYWORD = 1;
+    const T_VERSION_KEYWORD = 2;
+    const T_VERSION_NUMBER = 3;
+    const T_VERSION_IDENTIFIER = 4;
+    const T_COMMA = 5;
     const T_BUILD_KEYWORD = 6;
+    const T_BUILD_NUMBER = 7;
 
-    const REGEX_VERSION = '([0-9]+)\.([0-9]+)\.([0-9]+(\-[a-z]+)?)';
-    const REGEX_BUILD = '([a-z0-9]+)';
-
-    /**
-     * @param string $input version output
-     */
-    public function __construct($input)
-    {
-        $this->setInput($input);
-    }
+    const REGEX_VERSION = '[0-9]+\.[0-9]+\.[0-9]+(?:\-[a-z]+)?';
+    const REGEX_BUILD = '[a-z0-9]+';
 
     /**
      * Lexical catchable patterns
@@ -35,23 +28,10 @@ class DockerVersionLexer extends AbstractLexer
         return [
             'Docker',
             'version',
-            self::REGEX_VERSION,
             ',',
             'build',
+            self::REGEX_VERSION,
             self::REGEX_BUILD,
-        ];
-    }
-
-    /**
-     * Lexical non-catchable patterns
-     *
-     * @return array
-     */
-    protected function getNonCatchablePatterns(): array
-    {
-        return [
-            '\s+',
-            '(.)',
         ];
     }
 
@@ -73,13 +53,14 @@ class DockerVersionLexer extends AbstractLexer
                     return self::T_COMMA;
                 case 'build' == $value;
                     return self::T_BUILD_KEYWORD;
-                case preg_match('/^'.self::REGEX_VERSION.'$/', $value, $matches):
-                    // get major, minor and patch versions assigned to the value
-                    $value = $matches;
+                case preg_match('/^'.self::REGEX_VERSION.'$/', $value):
+                    // break down version into major, minor and patch
+                    preg_match('/^([0-9]+)\.([0-9]+)\.([0-9]+(?:\-[a-z]+)?)$/', $value, $matches);
+                    $value = new Version($matches[1], $matches[2], $matches[3]);
 
                     return self::T_VERSION_NUMBER;
                 case preg_match('/^'.self::REGEX_BUILD.'$/', $value):
-                    return self::T_BUILD_NUMBER;
+                        return self::T_BUILD_NUMBER;
             }
         }
 

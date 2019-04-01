@@ -21,9 +21,12 @@ class DockerVersionParser
      */
     protected $build = null;
 
-    public function __construct($dql)
+    /**
+     * @param DockerVersionLexer $dockerVersionLexer
+     */
+    public function __construct(DockerVersionLexer $dockerVersionLexer)
     {
-        $this->lexer = new DockerVersionLexer($dql);
+        $this->lexer = $dockerVersionLexer;
         $this->parse();
     }
 
@@ -52,7 +55,7 @@ class DockerVersionParser
                 $this->parseDockerVersion();
                 break;
             default:
-                throw new \LogicException('Failed to parse string');
+                throw new \LogicException('Failed to parse initial token');
                 break;
         }
 
@@ -73,21 +76,22 @@ class DockerVersionParser
             $this->lexer->moveNext();
 
             if (DockerVersionLexer::T_VERSION_NUMBER === $this->lexer->lookahead['type']) {
-                $this->version = $this->lexer->lookahead['value'][0];
-                // skip all version tokens
-                $this->lexer->skipUntil(DockerVersionLexer::T_COMMA);
+                $this->version = $this->lexer->lookahead['value']->getVersion();
+                
+                $this->lexer->moveNext();
 
                 if ($this->lexer->isNextToken(DockerVersionLexer::T_COMMA)) {
                     $this->lexer->moveNext();
-                }
-                if ($this->lexer->isNextToken(DockerVersionLexer::T_BUILD_KEYWORD)) {
-                    $this->lexer->moveNext();
-                }
 
-                if (DockerVersionLexer::T_BUILD_NUMBER === $this->lexer->lookahead['type']) {
-                    $this->build = $this->lexer->lookahead['value'];
-                    $this->lexer->moveNext();
-                    $succeeded = true;
+                    if ($this->lexer->isNextToken(DockerVersionLexer::T_BUILD_KEYWORD)) {
+                        $this->lexer->moveNext();
+
+                        if (DockerVersionLexer::T_BUILD_NUMBER === $this->lexer->lookahead['type']) {
+                            $this->build = $this->lexer->lookahead['value'];
+                            $this->lexer->moveNext();
+                            $succeeded = true;
+                        }
+                    }
                 }
             }
         }

@@ -5,6 +5,7 @@ namespace App\Application;
 use Symfony\Component\Process\Process;
 use App\Parser\DockerVersionParser;
 use Composer\Semver\Comparator;
+use App\Lexer\DockerVersionLexer;
 
 /**
  * By design, one object per docker container
@@ -57,7 +58,7 @@ final class Docker implements ApplicationInterface
             $this->isInstalled = true;
         }
 
-        $dockerVersionParser = new DockerVersionParser($process->getOutput());
+        $dockerVersionParser = new DockerVersionParser(new DockerVersionLexer($process->getOutput()));
         $this->version = $dockerVersionParser->getVersion();
         $this->build = $dockerVersionParser->getBuild();
 
@@ -125,7 +126,7 @@ final class Docker implements ApplicationInterface
             $process = new Process([
                 'docker',
                 'pull',
-                $this->image
+                $this->image,
             ]);
             $this->doRun($process);
 

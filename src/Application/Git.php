@@ -2,10 +2,10 @@
 
 namespace App\Application;
 
-use App\Application\ApplicationInterface;
 use Symfony\Component\Process\Process;
 use App\Parser\GitVersionParser;
 use Composer\Semver\Comparator;
+use App\Lexer\GitVersionLexer;
 
 class Git implements ApplicationInterface
 {
@@ -29,7 +29,7 @@ class Git implements ApplicationInterface
             $this->isInstalled = true;
         }
 
-        $gitVersionParser = new GitVersionParser($process->getOutput());
+        $gitVersionParser = new GitVersionParser(new GitVersionLexer($process->getOutput()));
         $this->version = $gitVersionParser->getVersion();
 
         if (Comparator::greaterThanOrEqualTo($gitVersionParser->getVersion(), self::MINIMUM_VERSION)) {
@@ -61,7 +61,13 @@ class Git implements ApplicationInterface
         return $this->isSupported;
     }
 
-    public function clone(string $repo, string $branch = 'master', string $path = null)
+    /**
+     * @param string $repo URL of repo
+     * @param string $branch Name of the branch
+     * @param string $path Where to clone repo into
+     * @return bool
+     */
+    public function clone(string $repo, string $branch = 'master', string $path = null): bool
     {
         if ($this->isInstalled()) {
             $path = null === $path ? sys_get_temp_dir() : $path;
@@ -74,7 +80,7 @@ class Git implements ApplicationInterface
                 '--branch',
                 $branch,
                 $repo,
-                $path
+                $path,
             ];
 
             $process = new Process($command);
@@ -82,5 +88,7 @@ class Git implements ApplicationInterface
 
             return $process->isSuccessful();
         }
+
+        return false;
     }
 }

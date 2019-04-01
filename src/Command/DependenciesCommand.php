@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use App\Application\Docker;
+use App\Application\Git;
 
 class DependenciesCommand extends Command
 {
@@ -28,13 +29,14 @@ class DependenciesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $this->checkDocker($io);
+        $this->checkGit($io);
     }
 
     /**
      * @param SymfonyStyle $io
      * @return Docker
      */
-    protected function checkDocker(SymfonyStyle $io): Docker
+    private function checkDocker(SymfonyStyle $io): Docker
     {
         $docker = new Docker('grooming-chimps-debugging');
 
@@ -59,5 +61,32 @@ class DependenciesCommand extends Command
         );
 
         return $docker;
+    }
+
+    /**
+     * @param SymfonyStyle $io
+     * @return Git
+     */
+    private function checkGit(SymfonyStyle $io): Git
+    {
+        $git = new Git();
+
+        if (!$git->isInstalled()) {
+            $io->error("Git is not installed");
+
+            return $git;
+        } 
+    
+        if (!$git->isSupported()) {
+            $io->error(sprintf('Please update your version of Git. Using %s, needed at least %s', $git->getVersion(), Git::MINIMUM_VERSION));
+        
+            return $git;
+        }
+
+        $io->success(
+            sprintf('You are running git version %s', $git->getVersion(), )
+        );
+
+        return $git;
     }
 }
