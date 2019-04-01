@@ -84,6 +84,14 @@ final class Docker implements ApplicationInterface
     }
 
     /**
+     * @return null|string
+     */
+    public function getName(): ? string
+    {
+        return $this->name;
+    }
+
+    /**
      * @return bool
      */
     public function isInstalled(): bool

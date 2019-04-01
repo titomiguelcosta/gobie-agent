@@ -76,7 +76,8 @@ class Git implements ApplicationInterface
                 'git',
                 'clone',
                 '--single-branch',
-                '--depth 1',
+                '--depth',
+                '1',
                 '--branch',
                 $branch,
                 $repo,
@@ -84,7 +85,13 @@ class Git implements ApplicationInterface
             ];
 
             $process = new Process($command);
-            $process->run();
+            $process->run(function ($type, $buffer) {
+                if (Process::ERR === $type) {
+                    echo 'ERR > ' . $buffer;
+                } else {
+                    echo 'OUT > ' . $buffer;
+                }
+            });
 
             return $process->isSuccessful();
         }

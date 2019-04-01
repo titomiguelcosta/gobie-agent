@@ -6,15 +6,21 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\ProjectExecuteEvent;
 use App\Event\ProjectShutdownEvent;
 use App\Event\ProjectEvents;
+use App\Application\Docker;
 
 class TaskSubscriber implements EventSubscriberInterface
 {
     public function executeTasks(ProjectExecuteEvent $event): void
     {
+        $metadata = $event->getMetadata();
+        /** @var Docker */
+        $docker = $metadata['docker'];
+        
         $tasks = $event->getProject()->getTasks();
-
         foreach ($tasks as $task) {
+            $process = $docker->exec($task->getCommand());
             printf("Executing tasks %s by running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
+            $task->setProcess($process);
         }
     }
 

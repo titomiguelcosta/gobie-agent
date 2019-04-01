@@ -11,6 +11,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use App\Model\Project;
 use App\Model\Task;
 use App\Manager\ProjectManager;
+use Symfony\Component\Console\Input\InputOption;
+use Composer\XdebugHandler\Process;
 
 class ProjectRunCommand extends Command
 {
@@ -29,6 +31,7 @@ class ProjectRunCommand extends Command
         $this
             ->setDescription('Run a project')
             ->addArgument('id', InputArgument::REQUIRED, 'ID of the project')
+            ->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Name of the branch to clone', 'master')
         ;
     }
 
@@ -39,9 +42,15 @@ class ProjectRunCommand extends Command
 
         $manager = new ProjectManager($this->eventDispatcher);
 
-        $project = new Project('Grooming Chimps', 'https://github.com/titomiguelcosta/grooming-chimps', 'titomiguelcosta/grooming-chimps-php73');
-        $project->addTask(new Task('composer:install', 'composer install'));
-        $project->addTask(new Task('phpunit:run', 'php vendor/bin/phpunit'));
+        $project = new Project('Grooming Chimps', 'https://github.com/titomiguelcosta/lock.git', 'titomiguelcosta/grooming-chimps-php73');
+        $project->addTask(new Task('system:ls', 'ls -al'));
+        $project->addTask(new Task('system:pwd', 'pwd'));
+
+        foreach ($project->getTasks() as $task) {
+            if ($task->getProcess() instanceof Process) {
+                printf('%s: %s.%s', $task->getName(), $task->getProcess()->getOutput(), PHP_EOL);
+            }
+        }
 
         $manager->execute($project);
     }

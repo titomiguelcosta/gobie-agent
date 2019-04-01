@@ -6,29 +6,39 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\ProjectEvents;
 use App\Event\ProjectBootEvent;
 use App\Event\ProjectShutdownEvent;
+use App\Application\Docker;
 
 class DockerSubscriber implements EventSubscriberInterface
 {
-    public function generateDockerCompose(ProjectBootEvent $event)
-    {
-        printf("Generate docker-compose from services in %s.%s", $event->getMetadata()['path'], PHP_EOL);
-    }
+    /** @var Docker */
+    private $docker;
     
     public function runDocker(ProjectBootEvent $event)
     {
-        printf("Run docker.%s", PHP_EOL);
+        $metadata = $event->getMetadata();
+        
+        $this->docker = new Docker($metadata['id'], 'titomiguelcosta/grooming-chimps-php73', $metadata['path']);
+        $running = $this->docker->run();
+
+        if ($running) {
+            $metadata['docker'] = $this->docker;
+            printf("Running docker named %s.%s", $this->docker->getName(), PHP_EOL);
+        } else {
+            printf('It failed to start docker.%s', PHP_EOL);
+            $event->stopPropagation();
+        }
     }
 
     public function destroyDocker(ProjectShutdownEvent $event)
     {
-        printf("Destroy docker.%s", PHP_EOL);
+        $this->docker->destroy();
+        printf("Destroyed docker with name %s.%s", $this->docker->getName(), PHP_EOL);
     }
 
     public static function getSubscribedEvents()
     {
         return [
            ProjectEvents::BOOT_EVENT => [
-                ['generateDockerCompose', 40],
                 ['runDocker', 10],
            ],
            ProjectEvents::SHUTDOWN_EVENT => ['destroyDocker', 20],

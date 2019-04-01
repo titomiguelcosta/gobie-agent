@@ -52,6 +52,7 @@ class DockerVersionLexer extends BaseLexer
                 case ',' == $value:
                     return self::T_COMMA;
                 case 'build' == $value;
+
                     return self::T_BUILD_KEYWORD;
                 case preg_match('/^'.self::REGEX_VERSION.'$/', $value):
                     // break down version into major, minor and patch
