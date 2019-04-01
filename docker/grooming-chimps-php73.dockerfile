@@ -4,10 +4,12 @@ WORKDIR /app
 
 COPY . /app
 
-# install git
+# update apt
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y git
+    apt-get install -y git libzip-dev
+
+RUN docker-php-ext-install zip
 
 # install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
