@@ -124,10 +124,9 @@ final class Docker implements ApplicationInterface
     }
 
     /**
-     * @param array $options
      * @return bool
      */
-    public function run(array $options = []): bool
+    public function run(): bool
     {
         if (!$this->isRunning()) {
             // pull image before attempting to run
@@ -139,7 +138,6 @@ final class Docker implements ApplicationInterface
             $this->doRun($process);
 
             if ($process->isSuccessful()) {
-                // run container
                 $command = [
                     'docker',
                     'run',
@@ -148,7 +146,7 @@ final class Docker implements ApplicationInterface
                     '--name', $this->name,
                     '-t', $this->image,
                 ];
-                $this->process = new Process(array_merge($command, $options));
+                $this->process = new Process($command);
                 $this->doRun($this->process, true);
 
                 // determine container id
@@ -181,7 +179,7 @@ final class Docker implements ApplicationInterface
     }
 
     /**
-     * @param array $options
+     * @param bool $image
      * @return bool
      */
     public function destroy(bool $image = false): bool

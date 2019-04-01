@@ -84,7 +84,7 @@ class DependenciesCommand extends Command
         }
 
         $io->success(
-            sprintf('You are running git version %s', $git->getVersion(), )
+            sprintf('You are running git version %s', $git->getVersion())
         );
 
         return $git;

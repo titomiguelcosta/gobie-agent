@@ -15,6 +15,8 @@ RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN php -r "unlink('composer-setup.php');"
 ENV PATH $PATH:/root/.composer/vendor/bin
 
+RUN composer install
+
 # https://web-techno.net/code-quality-check-tools-php/
 RUN composer global require phpunit/phpunit
 # RUN composer global require friendsofphp/php-cs-fixer
@@ -28,6 +30,6 @@ RUN composer global require bmitch/churn-php
 
 EXPOSE 7000
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["php", "bin/console"]
 
-CMD ["/app/docker/boot.sh"]
+CMD ["server:run", "0.0.0.0:7000"]
