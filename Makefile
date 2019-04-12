@@ -1,5 +1,10 @@
-docker-purge:
-	docker rm --force $(docker ps -qa) && docker rmi --force $(docker images -qa)
+docker-purge-all: docker-purge-containers docker-purge-images
+
+docker-purge-containers:
+	docker rm --force $(shell docker ps -qa)
+
+docker-purge-images:
+	docker rmi --force $(shell docker images -qa)
 
 docker-build:
 	docker build -t titomiguelcosta/grooming-chimps-php73 -f docker/grooming-chimps-php73.dockerfile .
