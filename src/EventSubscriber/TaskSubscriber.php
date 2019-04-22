@@ -37,9 +37,9 @@ class TaskSubscriber implements EventSubscriberInterface
         foreach ($job->getTasks() as $task) {
             $process = $task->getProcess();
             if ($process instanceof Process) {
-                $response = $this->client->putTask($task->getId(), [
-                    'output' => $process->getOutput(),
-                    'errorOutput' => "a" . $process->getErrorOutput(),
+                $this->client->putTask($task->getId(), [
+                    'output' => trim(preg_replace('/\s+/', ' ', $process->getOutput())),
+                    'errorOutput' => trim(preg_replace('/\s+/', ' ', $process->getErrorOutput())),
                     'exitCode' => $process->getExitCode(),
                 ]);
                 printf("Stored result for task %s after running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
