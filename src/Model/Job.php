@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class Project
+class Job
 {
     protected $name;
 
@@ -10,16 +10,17 @@ class Project
 
     protected $repo;
 
-    protected $image;
+    protected $branch;
 
     protected $services;
 
     protected $tasks;
 
-    public function __construct(string $name, string $repo, string $image)
+    public function __construct(string $repo, string $branch)
     {
-        $this->name = $name;
+        $this->name = 'demo';
         $this->repo = $repo;
+        $this->branch = $branch;
         $this->tasks = [];
         $this->services = [];
     }
@@ -32,6 +33,11 @@ class Project
     public function getRepo(): string
     {
         return $this->repo;
+    }
+
+    public function getBranch(): string
+    {
+        return $this->branch;
     }
 
     public function addTask(Task $task): void

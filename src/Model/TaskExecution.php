@@ -34,23 +34,23 @@ class TaskExecution
         return $this->exitCode;
     }
 
-    public function getExecutedAt(): ?\DateTimeInterface
+    public function getFinishedAt(): ?\DateTimeInterface
     {
-        return $this->executeAt;
+        return $this->finishedAt;
     }
 
-    public function setExecutedAt(\DateTimeImmutable $executedAt): void
+    public function setFinishedAt(\DateTimeImmutable $finishedAt): void
     {
-        $this->executeAt = $executeAt;
+        $this->finishedAt = $finishedAt;
     }
 
     public function getStartedAt(): ?\DateTimeInterface
     {
-        return $this->executeAt;
+        return $this->startedAt;
     }
 
-    public function setStartedAt(\DateTimeImmutable $executedAt): void
+    public function setStartedAt(\DateTimeImmutable $startedAt): void
     {
-        $this->executeAt = $executeAt;
+        $this->startedAt = $startedAt;
     }
 }

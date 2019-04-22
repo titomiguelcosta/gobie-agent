@@ -27,8 +27,11 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    Symfony\Component\HttpClient\CurlHttpClient: ~
+    Symfony\Component\HttpClient\CurlHttpClient:
+        $defaultOptions: 
+            base_uri: '%env(GROOMING_CHIMPS_API_BASE_URI)%'
 
     App\Api\GroomingChimps\Client:
         arguments:
             $httpClient: '@Symfony\Component\HttpClient\CurlHttpClient'
+            $authToken: '%env(GROOMING_CHIMPS_API_AUTH_TOKEN)%'

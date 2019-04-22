@@ -3,24 +3,24 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Event\ProjectBootEvent;
-use App\Event\ProjectEvents;
+use App\Event\JobBootEvent;
+use App\Event\JobEvents;
 
 class ConfigureSubscriber implements EventSubscriberInterface
 {
-    public function configuration(ProjectBootEvent $event): void
+    public function configuration(JobBootEvent $event): void
     {
         $metadata = $event->getMetadata();
         $metadata['id'] = uniqid();
         $metadata['path'] = sprintf('%s/%s', sys_get_temp_dir(), $metadata['id']);
 
-        printf("Setting path for the project at: %s.%s", $metadata['path'], PHP_EOL);
+        printf("Setting path for the job at: %s.%s", $metadata['path'], PHP_EOL);
     }
 
     public static function getSubscribedEvents()
     {
         return [
-           ProjectEvents::BOOT_EVENT => ['configuration', 999],
+            JobEvents::BOOT_EVENT => ['configuration', 999],
         ];
     }
 }

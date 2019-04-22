@@ -6,14 +6,21 @@ use Symfony\Component\Process\Process;
 
 class Task
 {
+    protected $id;
     protected $name;
     protected $command;
     protected $process = null;
 
-    public function __construct(string $name, string $command)
+    public function __construct(int $id, string $name, string $command)
     {
+        $this->id = $id;
         $this->name = $name;
         $this->command = $command;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getName(): string

@@ -3,8 +3,8 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Event\ProjectBootEvent;
-use App\Event\ProjectEvents;
+use App\Event\JobBootEvent;
+use App\Event\JobEvents;
 use App\Application\Git;
 
 class GitSubscriber implements EventSubscriberInterface
@@ -19,15 +19,15 @@ class GitSubscriber implements EventSubscriberInterface
         $this->git = $git;
     }
 
-    public function cloneRepo(ProjectBootEvent $event): void
+    public function cloneRepo(JobBootEvent $event): void
     {
-        $project = $event->getProject();
+        $job = $event->getJob();
         $metadata = $event->getMetadata();
-        
-        $cloned = $this->git->clone($project->getRepo(), 'master', $metadata['path']);
+
+        $cloned = $this->git->clone($job->getRepo(), 'master', $metadata['path']);
 
         if ($cloned) {
-            printf("Cloned project: %s at %s.%s", $project->getRepo(), $metadata['path'], PHP_EOL);
+            printf("Cloned job: %s at %s.%s", $job->getRepo(), $metadata['path'], PHP_EOL);
         } else {
             print('Failed to cloned repo.');
             $event->stopPropagation();
@@ -37,7 +37,7 @@ class GitSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-           ProjectEvents::BOOT_EVENT => ['cloneRepo', 600],
+            JobEvents::BOOT_EVENT => ['cloneRepo', 600],
         ];
     }
 }

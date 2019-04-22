@@ -3,37 +3,55 @@
 namespace App\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Event\ProjectExecuteEvent;
-use App\Event\ProjectShutdownEvent;
-use App\Event\ProjectEvents;
-use App\Application\Docker;
+use App\Event\JobExecuteEvent;
+use App\Event\JobShutdownEvent;
+use App\Event\JobEvents;
+use Symfony\Component\Process\Process;
+use App\Api\GroomingChimps\Client;
 
 class TaskSubscriber implements EventSubscriberInterface
 {
-    public function executeTasks(ProjectExecuteEvent $event): void
+    private $client;
+
+    public function __construct(Client $client)
     {
-        $metadata = $event->getMetadata();
-        /** @var Docker */
-        $docker = $metadata['docker'];
-        
-        $tasks = $event->getProject()->getTasks();
+        $this->client = $client;
+    }
+
+    public function executeTasks(JobExecuteEvent $event): void
+    {
+        $tasks = $event->getJob()->getTasks();
         foreach ($tasks as $task) {
-            $process = $docker->exec($task->getCommand());
-            printf("Executing tasks %s by running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
+            $process = new Process($task->getCommand());
+            $process->setTimeout(0);
+            $process->setIdleTimeout(0);
+            printf("Executing task %s by running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
+            $process->run();
             $task->setProcess($process);
         }
     }
 
-    public function storeResults(ProjectShutdownEvent $event): void
+    public function storeResults(JobShutdownEvent $event): void
     {
-        printf("Store result of tasks.%s", PHP_EOL);
+        $job = $event->getJob();
+        foreach ($job->getTasks() as $task) {
+            $process = $task->getProcess();
+            if ($process instanceof Process) {
+                $response = $this->client->putTask($task->getId(), [
+                    'output' => $process->getOutput(),
+                    'errorOutput' => "a" . $process->getErrorOutput(),
+                    'exitCode' => $process->getExitCode(),
+                ]);
+                printf("Stored result for task %s after running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
+            }
+        }
     }
 
     public static function getSubscribedEvents()
     {
         return [
-            ProjectEvents::EXECUTE_EVENT => 'executeTasks',
-            ProjectEvents::SHUTDOWN_EVENT => ['storeResults', 100],
+            JobEvents::EXECUTE_EVENT => 'executeTasks',
+            JobEvents::SHUTDOWN_EVENT => ['storeResults', 100],
         ];
     }
 }
