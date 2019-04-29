@@ -21,7 +21,7 @@ RUN composer install
 
 # https://web-techno.net/code-quality-check-tools-php/
 RUN composer global require phpunit/phpunit
-# RUN composer global require friendsofphp/php-cs-fixer
+RUN composer global require friendsofphp/php-cs-fixer
 RUN composer global require phpmd/phpmd
 RUN composer global require phpmetrics/phpmetrics
 RUN composer global require squizlabs/php_codesniffer
@@ -29,6 +29,7 @@ RUN composer global require phpstan/phpstan
 RUN composer global require phploc/phploc
 RUN composer global require sebastian/phpcpd
 RUN composer global require bmitch/churn-php
+RUN composer global require sensiolabs/security-checker
 
 EXPOSE 7000
 
