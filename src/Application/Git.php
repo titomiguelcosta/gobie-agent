@@ -65,9 +65,9 @@ class Git implements ApplicationInterface
      * @param string $repo URL of repo
      * @param string $branch Name of the branch
      * @param string $path Where to clone repo into
-     * @return bool
+     * @return null|Process
      */
-    public function clone(string $repo, string $branch = 'master', string $path = null): bool
+    public function clone(string $repo, string $branch = 'master', string $path = null): ?Process
     {
         if ($this->isInstalled()) {
             $path = null === $path ? sys_get_temp_dir() : $path;
@@ -93,9 +93,9 @@ class Git implements ApplicationInterface
                 }
             });
 
-            return $process->isSuccessful();
+            return $process;
         }
 
-        return false;
+        return null;
     }
 }

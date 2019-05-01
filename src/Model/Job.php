@@ -4,25 +4,31 @@ namespace App\Model;
 
 class Job
 {
-    protected $name;
+    const STATUS_PENDING = 'pending';
+    const STATUS_STARTED = 'started';
+    const STATUS_FINISHED = 'finished';
+    const STATUS_ABORTED = 'aborted';
 
-    protected $description;
+    private $id;
+    private $name;
+    private $repo;
+    private $branch;
+    private $services;
+    private $tasks;
 
-    protected $repo;
-
-    protected $branch;
-
-    protected $services;
-
-    protected $tasks;
-
-    public function __construct(string $repo, string $branch)
+    public function __construct(int $id, string $repo, string $branch)
     {
+        $this->id = $id;
         $this->name = 'demo';
         $this->repo = $repo;
         $this->branch = $branch;
         $this->tasks = [];
         $this->services = [];
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getName(): string

@@ -40,12 +40,12 @@ class JobRunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $id = (int)$input->getArgument('id');
+        $id = (int) $input->getArgument('id');
         $jobModel = $this->client->getJob($id);
 
-        $job = new Job($jobModel['project']['repo'], $jobModel['branch']);
+        $job = new Job($id, $jobModel['project']['repo'], $jobModel['branch']);
         foreach ($jobModel['tasks'] as $taskData) {
-            $task = new Task($taskData['id'], $taskData['tool'], $taskData['command']);
+            $task = new Task($taskData['id'], $taskData['tool'], $taskData['command'], $taskData['options']);
 
             $job->addTask($task);
         }
