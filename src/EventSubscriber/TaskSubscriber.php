@@ -31,7 +31,7 @@ class TaskSubscriber implements EventSubscriberInterface
                 'startedAt' => $this->dateTime->now(),
             ]);
 
-            $process = new Process($task->getCommand());
+            $process = Process::fromShellCommandline($task->getCommand());
             $task->setProcess($process);
             $process->setTimeout(0);
             $process->setIdleTimeout(0);

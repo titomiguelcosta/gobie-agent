@@ -18,12 +18,12 @@ class Task
     protected $options;
     protected $process = null;
 
-    public function __construct(int $id, string $name, string $command, array $options)
+    public function __construct(int $id, string $name, string $command, ?array $options)
     {
         $this->id = $id;
         $this->name = $name;
         $this->command = $command;
-        $this->options = $options;
+        $this->options = $options ?? [];
     }
 
     public function getId(): int
