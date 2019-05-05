@@ -42,7 +42,7 @@ class JobSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            JobEvents::BOOT_EVENT => ['startedJob', 100],
+            JobEvents::BOOT_EVENT => ['startedJob', 500],
             JobEvents::SHUTDOWN_EVENT => ['finishedJob', 1],
         ];
     }

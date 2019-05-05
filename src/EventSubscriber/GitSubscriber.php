@@ -58,7 +58,7 @@ class GitSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            JobEvents::BOOT_EVENT => ['cloneRepo', 600],
+            JobEvents::BOOT_EVENT => ['cloneRepo', 100],
         ];
     }
 }

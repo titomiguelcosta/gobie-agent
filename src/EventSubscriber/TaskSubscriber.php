@@ -23,6 +23,7 @@ class TaskSubscriber implements EventSubscriberInterface
 
     public function executeTasks(JobExecuteEvent $event): void
     {
+        $metadata = $event->getMetadata();
         $tasks = $event->getJob()->getTasks();
         foreach ($tasks as $task) {
             // notify API that we started running task
@@ -31,7 +32,7 @@ class TaskSubscriber implements EventSubscriberInterface
                 'startedAt' => $this->dateTime->now(),
             ]);
 
-            $process = Process::fromShellCommandline($task->getCommand());
+            $process = Process::fromShellCommandline($task->getCommand(), $metadata['path']);
             $task->setProcess($process);
             $process->setTimeout(0);
             $process->setIdleTimeout(0);
