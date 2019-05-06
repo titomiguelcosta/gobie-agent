@@ -9,8 +9,9 @@ use App\Application\Git;
 use App\Api\GroomingChimps\Client;
 use App\Model\Job;
 use App\Util\DateTime;
+use Symfony\Component\Process\Process;
 
-class GitSubscriber implements EventSubscriberInterface
+class BootstrapSubscriber implements EventSubscriberInterface
 {
     private $git;
     private $client;
@@ -55,10 +56,27 @@ class GitSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * To manage the GitHub token
+     * @see https://www.previousnext.com.au/blog/managing-composer-github-access-personal-access-tokens
+     */
+    public function composerInstall(JobBootEvent $event): void
+    {
+        $metadata = $event->getMetadata();
+
+        if (file_exists(sprintf('%s/composer.json', $metadata['path']))) {
+            $process = new Process(['composer', 'install', '--no-interaction', '--no-progress'], $metadata['path']);
+            $process->run();
+        }
+    }
+
     public static function getSubscribedEvents()
     {
         return [
-            JobEvents::BOOT_EVENT => ['cloneRepo', 100],
+            JobEvents::BOOT_EVENT => [
+                ['cloneRepo', 100],
+                ['composerInstall', 90],
+            ]
         ];
     }
 }
