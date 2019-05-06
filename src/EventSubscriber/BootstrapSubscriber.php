@@ -65,8 +65,11 @@ class BootstrapSubscriber implements EventSubscriberInterface
         $metadata = $event->getMetadata();
 
         if (file_exists(sprintf('%s/composer.json', $metadata['path']))) {
+            printf("About to install composer dependencies.%s", PHP_EOL);
             $process = new Process(['composer', 'install', '--no-interaction', '--no-progress'], $metadata['path']);
             $process->run();
+        } else {
+            printf("Project is not using composer.%s", PHP_EOL);
         }
     }
 
