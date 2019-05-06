@@ -9,6 +9,8 @@ use Symfony\Component\Process\Process;
 use App\Api\GroomingChimps\Client;
 use App\Model\Task;
 use App\Util\DateTime;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 class TaskSubscriber implements EventSubscriberInterface
 {
@@ -31,8 +33,12 @@ class TaskSubscriber implements EventSubscriberInterface
                 'status' => Task::STATUS_RUNNING,
                 'startedAt' => $this->dateTime->now(),
             ]);
-
-            $process = Process::fromShellCommandline($task->getCommand(), $metadata['path']);
+            
+            $twig = new Environment(new ArrayLoader(['command' => $task->getCommand()]));
+            $process = Process::fromShellCommandline(
+                $twig->render('command', array_merge($metadata->getArrayCopy(), $task->getOptions())),
+                $task->shouldCwd() ? $metadata['path'] : null
+            );
             $task->setProcess($process);
             $process->setTimeout(0);
             $process->setIdleTimeout(0);

@@ -10,7 +10,7 @@ use App\Api\GroomingChimps\Client;
 
 class GroomingChimpsApiClientCommand extends Command
 {
-    protected static $defaultName = 'grooming-chimps:api:client';
+    protected static $defaultName = 'app:grooming-chimps:api:client';
 
     /** @var Client */
     private $client;

@@ -55,4 +55,9 @@ class Task
     {
         return $this->process;
     }
+
+    public function shouldCwd(): bool
+    {
+        return array_key_exists('cwd', $this->options) && $this->options['cwd'];
+    }
 }
