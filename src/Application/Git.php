@@ -7,7 +7,7 @@ use App\Parser\GitVersionParser;
 use Composer\Semver\Comparator;
 use App\Lexer\GitVersionLexer;
 
-class Git implements ApplicationInterface
+final class Git implements ApplicationInterface
 {
     const MINIMUM_VERSION = '2.11.0';
 
@@ -20,9 +20,12 @@ class Git implements ApplicationInterface
     /** @var bool */
     private $isSupported = false;
 
-    public function __construct()
+    /**
+     * @param Process|null $process
+     */
+    public function __construct(?Process $process = null)
     {
-        $process = new Process(['git', '--version']);
+        $process = $process ?? new Process(['git', '--version']);
         $process->run();
 
         if ($process->isSuccessful()) {
@@ -40,7 +43,7 @@ class Git implements ApplicationInterface
     /**
      * @return string|null
      */
-    public function getVersion(): ? string
+    public function getVersion(): ?string
     {
         return $this->version;
     }
@@ -62,14 +65,16 @@ class Git implements ApplicationInterface
     }
 
     /**
-     * @param string $repo   URL of repo
-     * @param string $branch Name of the branch
-     * @param string $path   Where to clone repo into
+     * @param string       $repo
+     * @param string       $branch
+     * @param string|null  $path
+     * @param Process|null $process
      *
      * @return Process|null
      */
-    public function clone(string $repo, string $branch = 'master', string $path = null): ?Process
-    {
+    public function clone(
+        string $repo, string $branch = 'master', ?string $path = null, ?Process $process = null
+    ): ?Process {
         if ($this->isInstalled()) {
             $path = null === $path ? sys_get_temp_dir() : $path;
 
@@ -85,7 +90,7 @@ class Git implements ApplicationInterface
                 $path,
             ];
 
-            $process = new Process($command);
+            $process = $process ?? new Process($command);
             $process->run(function ($type, $buffer) {
                 if (Process::ERR === $type) {
                     echo 'ERR > '.$buffer;

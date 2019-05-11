@@ -6,8 +6,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\JobBootEvent;
 use App\Event\JobEvents;
 
-class ConfigureSubscriber implements EventSubscriberInterface
+final class ConfigureSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @param JobBootEvent $event
+     */
     public function configuration(JobBootEvent $event): void
     {
         $metadata = $event->getMetadata();
@@ -17,6 +20,9 @@ class ConfigureSubscriber implements EventSubscriberInterface
         printf('Setting path for the job at: %s.%s', $metadata['path'], PHP_EOL);
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

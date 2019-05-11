@@ -15,12 +15,24 @@ class JobSubscriber implements EventSubscriberInterface
     private $client;
     private $dateTime;
 
+    /**
+     * @param Client   $client
+     * @param DateTime $dateTime
+     */
     public function __construct(Client $client, DateTime $dateTime)
     {
         $this->client = $client;
         $this->dateTime = $dateTime;
     }
 
+    /**
+     * @param JobBootEvent $event
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function startedJob(JobBootEvent $event): void
     {
         $job = $event->getJob();
@@ -30,6 +42,14 @@ class JobSubscriber implements EventSubscriberInterface
         ]);
     }
 
+    /**
+     * @param JobShutdownEvent $event
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function finishedJob(JobShutdownEvent $event): void
     {
         $job = $event->getJob();
@@ -39,6 +59,9 @@ class JobSubscriber implements EventSubscriberInterface
         ]);
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

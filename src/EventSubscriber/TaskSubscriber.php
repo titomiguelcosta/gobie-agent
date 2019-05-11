@@ -14,15 +14,33 @@ use Twig\Loader\ArrayLoader;
 
 class TaskSubscriber implements EventSubscriberInterface
 {
+    /** @var Client */
     private $client;
+
+    /** @var DateTime */
     private $dateTime;
 
+    /**
+     * @param Client   $client
+     * @param DateTime $dateTime
+     */
     public function __construct(Client $client, DateTime $dateTime)
     {
         $this->client = $client;
         $this->dateTime = $dateTime;
     }
 
+    /**
+     * @param JobExecuteEvent $event
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function executeTasks(JobExecuteEvent $event): void
     {
         $metadata = $event->getMetadata();
@@ -67,6 +85,9 @@ class TaskSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

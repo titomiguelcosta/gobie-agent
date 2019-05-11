@@ -11,7 +11,7 @@ use App\Model\Job;
 use App\Util\DateTime;
 use Symfony\Component\Process\Process;
 
-class BootstrapSubscriber implements EventSubscriberInterface
+final class BootstrapSubscriber implements EventSubscriberInterface
 {
     private $git;
     private $client;
@@ -28,6 +28,14 @@ class BootstrapSubscriber implements EventSubscriberInterface
         $this->dateTime = $dateTime;
     }
 
+    /**
+     * @param JobBootEvent $event
+     *
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
     public function cloneRepo(JobBootEvent $event): void
     {
         $job = $event->getJob();
@@ -60,14 +68,17 @@ class BootstrapSubscriber implements EventSubscriberInterface
      * To manage the GitHub token.
      *
      * @see https://www.previousnext.com.au/blog/managing-composer-github-access-personal-access-tokens
+     *
+     * @param JobBootEvent $event
+     * @param Process|null $process
      */
-    public function composerInstall(JobBootEvent $event): void
+    public function composerInstall(JobBootEvent $event, ?Process $process = null): void
     {
         $metadata = $event->getMetadata();
 
         if (file_exists(sprintf('%s/composer.json', $metadata['path']))) {
             printf('About to install composer dependencies%s', PHP_EOL);
-            $process = new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $metadata['path']);
+            $process = $process ?? new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $metadata['path']);
             $process->run(function ($type, $buffer) {
                 if (Process::ERR === $type) {
                     echo 'ERR > '.$buffer;
@@ -80,6 +91,9 @@ class BootstrapSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return [

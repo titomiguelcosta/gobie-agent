@@ -4,7 +4,7 @@ namespace App\Parser;
 
 use App\Lexer\GitVersionLexer;
 
-class GitVersionParser
+final class GitVersionParser
 {
     /**
      * @var GitVersionLexer
@@ -14,7 +14,7 @@ class GitVersionParser
     /**
      * @var string
      */
-    protected $version = null;
+    private $version = null;
 
     /**
      * @param GitVersionLexer $gitVersionLexer
