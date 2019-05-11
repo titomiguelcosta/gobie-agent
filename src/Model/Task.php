@@ -3,6 +3,8 @@
 namespace App\Model;
 
 use Symfony\Component\Process\Process;
+use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 final class Task
 {
@@ -95,5 +97,22 @@ final class Task
     public function shouldCwd(): bool
     {
         return array_key_exists('cwd', $this->options) && $this->options['cwd'];
+    }
+
+    /**
+     * @param array $options
+     *
+     * @return string
+     *
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function getParsedCommand(array $metadata): string
+    {
+        $twig = new Environment(new ArrayLoader(['command' => $this->getCommand()]));
+        $command = $twig->render('command', array_merge($metadata, $this->getOptions()));
+
+        return $command;
     }
 }

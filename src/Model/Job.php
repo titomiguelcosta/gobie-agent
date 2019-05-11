@@ -22,9 +22,6 @@ final class Job
     private $branch;
 
     /** @var array */
-    private $services;
-
-    /** @var array */
     private $tasks;
 
     /**
@@ -39,7 +36,6 @@ final class Job
         $this->repo = $repo;
         $this->branch = $branch;
         $this->tasks = [];
-        $this->services = [];
     }
 
     /**

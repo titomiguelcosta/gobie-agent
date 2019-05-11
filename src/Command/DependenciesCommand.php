@@ -20,7 +20,7 @@ class DependenciesCommand extends Command
     private $io;
 
     /**
-     * @param Git $git
+     * @param Git      $git
      * @param Composer $composer
      */
     public function __construct(Git $git, Composer $composer)
@@ -29,7 +29,6 @@ class DependenciesCommand extends Command
         $this->git = $git;
         $this->composer = $composer;
     }
-
 
     protected function configure()
     {
@@ -52,6 +51,7 @@ class DependenciesCommand extends Command
 
     /**
      * @param ApplicationInterface $app
+     *
      * @return ApplicationInterface
      */
     private function checkApplication(ApplicationInterface $app): ApplicationInterface

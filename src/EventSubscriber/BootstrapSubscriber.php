@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Application\Composer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\JobBootEvent;
 use App\Event\JobEvents;
@@ -15,16 +15,20 @@ use Symfony\Component\Process\Process;
 final class BootstrapSubscriber implements EventSubscriberInterface
 {
     private $git;
+    private $composer;
     private $client;
     private $dateTime;
 
     /**
-     * @param Git    $git
-     * @param Client $client
+     * @param Git      $git
+     * @param Composer $composer
+     * @param Client   $client
+     * @param DateTime $dateTime
      */
-    public function __construct(Git $git, Client $client, DateTime $dateTime)
+    public function __construct(Git $git, Composer $composer, Client $client, DateTime $dateTime)
     {
         $this->git = $git;
+        $this->composer = $composer;
         $this->client = $client;
         $this->dateTime = $dateTime;
     }
@@ -66,7 +70,6 @@ final class BootstrapSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * ToDo: Create application for composer and inject in constructor, just like git
      * To manage the GitHub token.
      *
      * @see https://www.previousnext.com.au/blog/managing-composer-github-access-personal-access-tokens
@@ -80,16 +83,7 @@ final class BootstrapSubscriber implements EventSubscriberInterface
 
         if (file_exists(sprintf('%s/composer.json', $metadata['path']))) {
             printf('About to install composer dependencies%s', PHP_EOL);
-            $process = new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $metadata['path']);
-            $process->setTimeout(null);
-            $process->setIdleTimeout(null);
-            $process->run(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    echo 'ERR > '.$buffer;
-                } else {
-                    echo 'OUT > '.$buffer;
-                }
-            });
+            $this->composer->install($metadata['path']);
         } else {
             printf('Project is not using composer%s', PHP_EOL);
         }

@@ -19,7 +19,7 @@ class Client
      */
     public function __construct(
         HttpClientInterface $httpClient,
-        string $authToken = null
+        ?string $authToken = null
     ) {
         $this->httpClient = $httpClient;
         $this->authToken = $authToken;

@@ -7,8 +7,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use App\Model\Job;
-use App\Model\Task;
 use App\Manager\JobManager;
 use App\Api\GroomingChimps\Client;
 
@@ -41,15 +39,9 @@ class JobRunCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $id = (int) $input->getArgument('id');
-        $jobModel = $this->client->getJob($id);
+        $data = $this->client->getJob($id);
 
-        $job = new Job($id, $jobModel['project']['repo'], $jobModel['branch']);
-        foreach ($jobModel['tasks'] as $taskData) {
-            $task = new Task($taskData['id'], $taskData['tool'], $taskData['command'], $taskData['options']);
-
-            $job->addTask($task);
-        }
-
+        $job = $this->jobManager->populate($id, $data);
         $this->jobManager->execute($job);
     }
 }
