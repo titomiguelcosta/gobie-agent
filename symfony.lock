@@ -59,9 +59,6 @@
     "egulias/email-validator": {
         "version": "2.1.7"
     },
-    "fig/link-util": {
-        "version": "1.0.0"
-    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -146,9 +143,6 @@
     "psr/container": {
         "version": "1.0.0"
     },
-    "psr/link": {
-        "version": "1.0.0"
-    },
     "psr/log": {
         "version": "1.1.0"
     },
@@ -205,9 +199,6 @@
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.2.0"
-    },
-    "symfony/asset": {
-        "version": "v4.2.4"
     },
     "symfony/cache": {
         "version": "v4.2.4"
@@ -279,9 +270,6 @@
             ".env"
         ]
     },
-    "symfony/form": {
-        "version": "v4.2.4"
-    },
     "symfony/framework-bundle": {
         "version": "4.2",
         "recipe": {
@@ -313,9 +301,6 @@
     "symfony/inflector": {
         "version": "v4.2.4"
     },
-    "symfony/intl": {
-        "version": "v4.2.4"
-    },
     "symfony/maker-bundle": {
         "version": "1.0",
         "recipe": {
@@ -344,9 +329,6 @@
     },
     "symfony/options-resolver": {
         "version": "v4.2.4"
-    },
-    "symfony/polyfill-intl-icu": {
-        "version": "v1.10.0"
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.10.0"
@@ -482,9 +464,6 @@
     "symfony/var-exporter": {
         "version": "v4.2.4"
     },
-    "symfony/web-link": {
-        "version": "v4.2.4"
-    },
     "symfony/web-profiler-bundle": {
         "version": "3.3",
         "recipe": {
@@ -498,15 +477,6 @@
             "config/packages/test/web_profiler.yaml",
             "config/routes/dev/web_profiler.yaml"
         ]
-    },
-    "symfony/web-server-bundle": {
-        "version": "3.3",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
-        }
     },
     "symfony/yaml": {
         "version": "v4.2.4"
