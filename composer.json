@@ -1,8 +1,16 @@
 {
     "name": "titomiguelcosta/grooming-chimps-agent",
-    "description": "Responsible to run docker and execute tasks",
+    "description": "Responsible for executing all the tasks associated with a job and report back to the api",
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
+    "homepage": "https://groomingchimps.titomiguelcosta.com",
+    "keywords": ["agent", "symfony", "php", "grooming chimps", "docker", "aws batch"],
+    "authors": [
+        {
+            "name": "Tito Miguel Costa",
+            "email": "groomingchimps@titomiguelcosta.com"
+        }
+    ],
     "require": {
         "php": "^7.1.3",
         "ext-ctype": "*",
