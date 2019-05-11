@@ -7,7 +7,7 @@ COPY . /app
 # update apt
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get install -y git libzip-dev
+    apt-get install -y git zip libzip-dev
 
 RUN docker-php-ext-install zip
 
