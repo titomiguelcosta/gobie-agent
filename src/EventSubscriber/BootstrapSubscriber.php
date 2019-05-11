@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\JobBootEvent;
 use App\Event\JobEvents;
@@ -65,6 +66,7 @@ final class BootstrapSubscriber implements EventSubscriberInterface
     }
 
     /**
+     * ToDo: Create application for composer and inject in constructor, just like git
      * To manage the GitHub token.
      *
      * @see https://www.previousnext.com.au/blog/managing-composer-github-access-personal-access-tokens
@@ -72,13 +74,13 @@ final class BootstrapSubscriber implements EventSubscriberInterface
      * @param JobBootEvent $event
      * @param Process|null $process
      */
-    public function composerInstall(JobBootEvent $event, ?Process $process = null): void
+    public function composerInstall(JobBootEvent $event): void
     {
         $metadata = $event->getMetadata();
 
         if (file_exists(sprintf('%s/composer.json', $metadata['path']))) {
             printf('About to install composer dependencies%s', PHP_EOL);
-            $process = $process ?? new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $metadata['path']);
+            $process = new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $metadata['path']);
             $process->run(function ($type, $buffer) {
                 if (Process::ERR === $type) {
                     echo 'ERR > '.$buffer;
