@@ -11,7 +11,7 @@ class Git implements ApplicationInterface
 {
     const MINIMUM_VERSION = '2.11.0';
 
-    /** @var null|string */
+    /** @var string|null */
     private $version = null;
 
     /** @var bool */
@@ -38,7 +38,7 @@ class Git implements ApplicationInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getVersion(): ? string
     {
@@ -62,10 +62,11 @@ class Git implements ApplicationInterface
     }
 
     /**
-     * @param string $repo URL of repo
+     * @param string $repo   URL of repo
      * @param string $branch Name of the branch
-     * @param string $path Where to clone repo into
-     * @return null|Process
+     * @param string $path   Where to clone repo into
+     *
+     * @return Process|null
      */
     public function clone(string $repo, string $branch = 'master', string $path = null): ?Process
     {
@@ -87,9 +88,9 @@ class Git implements ApplicationInterface
             $process = new Process($command);
             $process->run(function ($type, $buffer) {
                 if (Process::ERR === $type) {
-                    echo 'ERR > ' . $buffer;
+                    echo 'ERR > '.$buffer;
                 } else {
-                    echo 'OUT > ' . $buffer;
+                    echo 'OUT > '.$buffer;
                 }
             });
 

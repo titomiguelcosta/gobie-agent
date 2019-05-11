@@ -19,7 +19,7 @@ class DockerVersionLexer extends BaseLexer
     const REGEX_BUILD = '[a-z0-9]+';
 
     /**
-     * Lexical catchable patterns
+     * Lexical catchable patterns.
      *
      * @return array
      */
@@ -36,10 +36,11 @@ class DockerVersionLexer extends BaseLexer
     }
 
     /**
-     * Retrieve token type. Also processes the token value if necessary
+     * Retrieve token type. Also processes the token value if necessary.
      *
      * @param string $value
-     * @return integer
+     *
+     * @return int
      */
     protected function getType(&$value): int
     {
@@ -51,7 +52,7 @@ class DockerVersionLexer extends BaseLexer
                     return self::T_VERSION_KEYWORD;
                 case ',' == $value:
                     return self::T_COMMA;
-                case 'build' == $value;
+                case 'build' == $value:
 
                     return self::T_BUILD_KEYWORD;
                 case preg_match('/^'.self::REGEX_VERSION.'$/', $value):

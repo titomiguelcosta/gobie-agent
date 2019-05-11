@@ -22,7 +22,7 @@ class DependenciesCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -34,6 +34,7 @@ class DependenciesCommand extends Command
 
     /**
      * @param SymfonyStyle $io
+     *
      * @return Docker
      */
     private function checkDocker(SymfonyStyle $io): Docker
@@ -41,14 +42,14 @@ class DependenciesCommand extends Command
         $docker = new Docker('grooming-chimps-debugging');
 
         if (!$docker->isInstalled()) {
-            $io->error("Docker is not installed");
+            $io->error('Docker is not installed');
 
             return $docker;
-        } 
-    
+        }
+
         if (!$docker->isSupported()) {
             $io->error(sprintf('Please update your version of Docker. Using %s, needed at least %s', $docker->getVersion(), Docker::MINIMUM_VERSION));
-        
+
             return $docker;
         }
 
@@ -65,6 +66,7 @@ class DependenciesCommand extends Command
 
     /**
      * @param SymfonyStyle $io
+     *
      * @return Git
      */
     private function checkGit(SymfonyStyle $io): Git
@@ -72,14 +74,14 @@ class DependenciesCommand extends Command
         $git = new Git();
 
         if (!$git->isInstalled()) {
-            $io->error("Git is not installed");
+            $io->error('Git is not installed');
 
             return $git;
-        } 
-    
+        }
+
         if (!$git->isSupported()) {
             $io->error(sprintf('Please update your version of Git. Using %s, needed at least %s', $git->getVersion(), Git::MINIMUM_VERSION));
-        
+
             return $git;
         }
 

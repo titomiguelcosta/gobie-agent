@@ -33,7 +33,7 @@ class TaskSubscriber implements EventSubscriberInterface
                 'status' => Task::STATUS_RUNNING,
                 'startedAt' => $this->dateTime->now(),
             ]);
-            
+
             $twig = new Environment(new ArrayLoader(['command' => $task->getCommand()]));
             $process = Process::fromShellCommandline(
                 $twig->render('command', array_merge($metadata->getArrayCopy(), $task->getOptions())),
@@ -42,7 +42,7 @@ class TaskSubscriber implements EventSubscriberInterface
             $task->setProcess($process);
             $process->setTimeout(0);
             $process->setIdleTimeout(0);
-            printf("Executing task %s by running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
+            printf('Executing task %s by running %s.%s', $task->getName(), $task->getCommand(), PHP_EOL);
 
             try {
                 $process->run();
@@ -54,9 +54,9 @@ class TaskSubscriber implements EventSubscriberInterface
                     'status' => $process->isSuccessful() ? Task::STATUS_SUCCEEDED : Task::STATUS_FAILED,
                     'finishedAt' => $this->dateTime->now(),
                 ]);
-                printf("Stored result for task %s after running %s.%s", $task->getName(), $task->getCommand(), PHP_EOL);
+                printf('Stored result for task %s after running %s.%s', $task->getName(), $task->getCommand(), PHP_EOL);
             } catch (\Exception $exception) {
-                printf("Exception thrown when running task %s with message %s.%s", $task->getName(), $exception->getMessage(), PHP_EOL);
+                printf('Exception thrown when running task %s with message %s.%s', $task->getName(), $exception->getMessage(), PHP_EOL);
                 $this->client->putTask($task->getId(), [
                     'status' => Task::STATUS_FAILED,
                     'errorOutput' => $exception->getMessage(),

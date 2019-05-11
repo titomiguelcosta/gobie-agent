@@ -18,7 +18,7 @@ class BootstrapSubscriber implements EventSubscriberInterface
     private $dateTime;
 
     /**
-     * @param Git $git
+     * @param Git    $git
      * @param Client $client
      */
     public function __construct(Git $git, Client $client, DateTime $dateTime)
@@ -36,7 +36,7 @@ class BootstrapSubscriber implements EventSubscriberInterface
         $process = $this->git->clone($job->getRepo(), $job->getBranch(), $metadata['path']);
 
         if (null === $process) {
-            print('Git is not installed.'.PHP_EOL);
+            echo 'Git is not installed.'.PHP_EOL;
             $this->client->putJob($job->getId(), [
                 'status' => Job::STATUS_ABORTED,
                 'errors' => ['Git is not installed'],
@@ -44,9 +44,9 @@ class BootstrapSubscriber implements EventSubscriberInterface
             ]);
             $event->stopPropagation();
         } elseif ($process->isSuccessful()) {
-            printf("Cloned job: %s at %s.%s", $job->getRepo(), $metadata['path'], PHP_EOL);
+            printf('Cloned job: %s at %s.%s', $job->getRepo(), $metadata['path'], PHP_EOL);
         } else {
-            print('Failed to clone repo.'.PHP_EOL);
+            echo 'Failed to clone repo.'.PHP_EOL;
             $this->client->putJob($job->getId(), [
                 'status' => Job::STATUS_ABORTED,
                 'errors' => ['Failed to clone repo'],
@@ -57,7 +57,8 @@ class BootstrapSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * To manage the GitHub token
+     * To manage the GitHub token.
+     *
      * @see https://www.previousnext.com.au/blog/managing-composer-github-access-personal-access-tokens
      */
     public function composerInstall(JobBootEvent $event): void
@@ -65,7 +66,7 @@ class BootstrapSubscriber implements EventSubscriberInterface
         $metadata = $event->getMetadata();
 
         if (file_exists(sprintf('%s/composer.json', $metadata['path']))) {
-            printf("About to install composer dependencies%s", PHP_EOL);
+            printf('About to install composer dependencies%s', PHP_EOL);
             $process = new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $metadata['path']);
             $process->run(function ($type, $buffer) {
                 if (Process::ERR === $type) {
@@ -75,7 +76,7 @@ class BootstrapSubscriber implements EventSubscriberInterface
                 }
             });
         } else {
-            printf("Project is not using composer%s", PHP_EOL);
+            printf('Project is not using composer%s', PHP_EOL);
         }
     }
 
@@ -85,7 +86,7 @@ class BootstrapSubscriber implements EventSubscriberInterface
             JobEvents::BOOT_EVENT => [
                 ['cloneRepo', 100],
                 ['composerInstall', 90],
-            ]
+            ],
         ];
     }
 }

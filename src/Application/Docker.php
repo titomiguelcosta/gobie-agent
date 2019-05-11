@@ -8,16 +8,16 @@ use Composer\Semver\Comparator;
 use App\Lexer\DockerVersionLexer;
 
 /**
- * By design, one object per docker container
+ * By design, one object per docker container.
  */
 final class Docker implements ApplicationInterface
 {
     const MINIMUM_VERSION = '18.03.0';
 
-    /** @var null|string */
+    /** @var string|null */
     private $version = null;
 
-    /** @var null|string */
+    /** @var string|null */
     private $build = null;
 
     /** @var bool */
@@ -42,7 +42,7 @@ final class Docker implements ApplicationInterface
     private $containerId = null;
 
     /**
-     * @param string $name Name of the container
+     * @param string $name  Name of the container
      * @param string $image Docker image
      */
     public function __construct(string $name, string $image = 'titomiguelcosta/grooming-chimps-php73', string $path = null)
@@ -68,7 +68,7 @@ final class Docker implements ApplicationInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getVersion(): ? string
     {
@@ -76,7 +76,7 @@ final class Docker implements ApplicationInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getBuild(): ? string
     {
@@ -84,7 +84,7 @@ final class Docker implements ApplicationInterface
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getName(): ? string
     {
@@ -142,7 +142,7 @@ final class Docker implements ApplicationInterface
                     'docker',
                     'run',
                     '-p', '7000:7000',
-                    '-v', $this->path . ':/project',
+                    '-v', $this->path.':/project',
                     '--name', $this->name,
                     '-t', $this->image,
                 ];
@@ -180,6 +180,7 @@ final class Docker implements ApplicationInterface
 
     /**
      * @param bool $image
+     *
      * @return bool
      */
     public function destroy(bool $image = false): bool
@@ -214,6 +215,7 @@ final class Docker implements ApplicationInterface
 
     /**
      * @param string $command
+     *
      * @return Process|null
      */
     public function exec(string $command): ? Process
@@ -236,9 +238,9 @@ final class Docker implements ApplicationInterface
     {
         $output = function ($type, $buffer) {
             if (Process::ERR === $type) {
-                echo 'ERR > ' . $buffer;
+                echo 'ERR > '.$buffer;
             } else {
-                echo 'OUT > ' . $buffer;
+                echo 'OUT > '.$buffer;
             }
         };
         $process->setTimeout(null);

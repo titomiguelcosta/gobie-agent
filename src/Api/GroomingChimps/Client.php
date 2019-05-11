@@ -22,7 +22,7 @@ class Client
     {
         $response = $this->httpClient->request(
             Request::METHOD_GET,
-            '/jobs/' . $id,
+            '/jobs/'.$id,
             $this->getOptions([])
         );
 
@@ -33,7 +33,7 @@ class Client
     {
         $response = $this->httpClient->request(
             Request::METHOD_PUT,
-            '/jobs/' . $id,
+            '/jobs/'.$id,
             $this->getOptions($data)
         );
 
@@ -44,7 +44,7 @@ class Client
     {
         $response = $this->httpClient->request(
             Request::METHOD_PUT,
-            '/tasks/' . $id,
+            '/tasks/'.$id,
             $this->getOptions($data)
         );
 

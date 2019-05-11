@@ -9,12 +9,12 @@ class GitVersionLexer extends BaseLexer
     const T_VERSION_KEYWORD = 2;
     const T_VERSION_NUMBER = 3;
     const T_VERSION_STRING = 4;
-    
+
     const REGEX_VERSION_STRING = '([0-9]+)\.([0-9]+)\.([0-9]+(?:\-[a-z]+)?)';
     const REGEX_VERSION_NUMBER = '[0-9]+(?:\-[a-z]+)?';
 
     /**
-     * Lexical catchable patterns
+     * Lexical catchable patterns.
      *
      * @return array
      */
@@ -28,10 +28,11 @@ class GitVersionLexer extends BaseLexer
     }
 
     /**
-     * Retrieve token type. Also processes the token value if necessary
+     * Retrieve token type. Also processes the token value if necessary.
      *
      * @param string $value
-     * @return integer
+     *
+     * @return int
      */
     protected function getType(&$value): int
     {

@@ -34,7 +34,7 @@ class ExpressionLanguageCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $metadata = [
-            'path' => '/tmp'
+            'path' => '/tmp',
         ];
 
         $command = '"php bin/console lint:twig " ~ path ~ "/src"';

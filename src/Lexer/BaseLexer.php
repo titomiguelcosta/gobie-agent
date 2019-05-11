@@ -17,9 +17,7 @@ abstract class BaseLexer extends AbstractLexer
     /**
      * Tells the lexer to skip input tokens while it sees a token with the given value.
      *
-     * @param string $type The token type to skip while.
-     *
-     * @return void
+     * @param string $type the token type to skip while
      */
     public function skipWhile($type)
     {
@@ -29,7 +27,7 @@ abstract class BaseLexer extends AbstractLexer
     }
 
     /**
-     * Lexical non-catchable patterns
+     * Lexical non-catchable patterns.
      *
      * @return array
      */
