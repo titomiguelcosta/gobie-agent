@@ -41,6 +41,14 @@ final class Git implements ApplicationInterface
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return 'Git';
+    }
+
+    /**
      * @return string|null
      */
     public function getVersion(): ?string

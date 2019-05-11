@@ -2,6 +2,8 @@
 
 namespace App\Command;
 
+use App\Application\ApplicationInterface;
+use App\Application\Composer;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,12 +13,29 @@ use App\Application\Git;
 class DependenciesCommand extends Command
 {
     protected static $defaultName = 'app:dependencies';
+    private $git;
+    private $composer;
+
+    /** @var SymfonyStyle */
+    private $io;
+
+    /**
+     * @param Git $git
+     * @param Composer $composer
+     */
+    public function __construct(Git $git, Composer $composer)
+    {
+        parent::__construct();
+        $this->git = $git;
+        $this->composer = $composer;
+    }
+
 
     protected function configure()
     {
         $this
             ->setName(self::$defaultName)
-            ->setDescription('Checks projects meets all the dependencies')
+            ->setDescription('Checks environment meets all the dependencies')
         ;
     }
 
@@ -26,35 +45,35 @@ class DependenciesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
-        $this->checkGit($io);
+        $this->io = new SymfonyStyle($input, $output);
+        $this->checkApplication($this->git);
+        $this->checkApplication($this->composer);
     }
 
     /**
-     * @param SymfonyStyle $io
-     *
-     * @return Git
+     * @param ApplicationInterface $app
+     * @return ApplicationInterface
      */
-    private function checkGit(SymfonyStyle $io): Git
+    private function checkApplication(ApplicationInterface $app): ApplicationInterface
     {
-        $git = new Git();
+        if (!$app->isInstalled()) {
+            $this->io->error(sprintf('%s is not installed', $app->getName()));
 
-        if (!$git->isInstalled()) {
-            $io->error('Git is not installed');
-
-            return $git;
+            return $app;
         }
 
-        if (!$git->isSupported()) {
-            $io->error(sprintf('Please update your version of Git. Using %s, needed at least %s', $git->getVersion(), Git::MINIMUM_VERSION));
+        if (!$app->isSupported()) {
+            $this->io->error(
+                sprintf('Please update your version of %s. Using %s.', $app->getName(), $app->getVersion())
+            );
 
-            return $git;
+            return $app;
         }
 
-        $io->success(
-            sprintf('You are running git version %s', $git->getVersion())
+        $this->io->success(
+            sprintf('You are running %s version %s', $app->getName(), $app->getVersion())
         );
 
-        return $git;
+        return $app;
     }
 }
