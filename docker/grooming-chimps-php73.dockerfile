@@ -9,6 +9,7 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y git zip libzip-dev
 
+RUN docker-php-ext-install pcntl
 RUN docker-php-ext-install zip
 
 # install composer
@@ -31,8 +32,6 @@ RUN composer global require sebastian/phpcpd
 RUN composer global require bmitch/churn-php
 RUN composer global require sensiolabs/security-checker
 
-EXPOSE 7000
-
 ENTRYPOINT ["php", "bin/console"]
 
-CMD ["server:run", "0.0.0.0:7000"]
+CMD ["app:dependencies"]
