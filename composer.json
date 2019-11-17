@@ -4,7 +4,14 @@
     "type": "project",
     "license": "MIT",
     "homepage": "https://groomingchimps.titomiguelcosta.com",
-    "keywords": ["agent", "symfony", "php", "grooming chimps", "docker", "aws batch"],
+    "keywords": [
+        "agent",
+        "symfony",
+        "php",
+        "grooming chimps",
+        "docker",
+        "aws batch"
+    ],
     "authors": [
         {
             "name": "Tito Miguel Costa",
