@@ -12,7 +12,7 @@ Configuration is the docker directory and there are make commands to build it.
 
 ### Images
 
-* grooming-chimps-php73: PHP 7.3 with several PHP packages pre-installed
+* titomiguelcosta/grooming-chimps-php73: PHP 7.3 with several PHP packages pre-installed
 
 ### Environment variables
 
