@@ -24,7 +24,8 @@ RUN composer install
 RUN composer global require phpunit/phpunit \
     phpmd/phpmd phpmetrics/phpmetrics squizlabs/php_codesniffer \
     phpstan/phpstan phploc/phploc sebastian/phpcpd bmitch/churn-php \
-    sensiolabs/security-checker nunomaduro/phpinsights
+    sensiolabs/security-checker nunomaduro/phpinsights \
+    vimeo/psalm
 
 ENTRYPOINT ["php", "bin/console"]
 
