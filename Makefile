@@ -8,6 +8,8 @@ docker-purge-images:
 
 docker-build:
 	docker build -t titomiguelcosta/grooming-chimps-php73 -f docker/grooming-chimps-php73.dockerfile .
+	docker build -t titomiguelcosta/grooming-chimps-php74 -f docker/grooming-chimps-php74.dockerfile .
 
 docker-push:
 	docker push titomiguelcosta/grooming-chimps-php73
+	docker push titomiguelcosta/grooming-chimps-php74
