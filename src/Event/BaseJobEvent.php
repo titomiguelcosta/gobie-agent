@@ -2,11 +2,11 @@
 
 namespace App\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use App\Model\Job;
 use ArrayObject;
 
-abstract class BaseJobEvent extends Event
+abstract class BaseJobEvent extends GenericEvent
 {
     protected $job;
     protected $metadata;

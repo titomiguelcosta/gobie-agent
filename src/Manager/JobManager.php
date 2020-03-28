@@ -48,16 +48,16 @@ final class JobManager
     {
         $metadata = new ArrayObject();
         $bootEvent = new JobBootEvent($job, $metadata);
-        $this->eventDispatcher->dispatch(JobEvents::BOOT_EVENT, $bootEvent);
+        $this->eventDispatcher->dispatch($bootEvent, JobEvents::BOOT_EVENT);
 
         if (!$bootEvent->isPropagationStopped()) {
             $executeEvent = new JobExecuteEvent($job, $metadata);
 
-            $this->eventDispatcher->dispatch(JobEvents::EXECUTE_EVENT, $executeEvent);
+            $this->eventDispatcher->dispatch($executeEvent, JobEvents::EXECUTE_EVENT);
             if (!$executeEvent->isPropagationStopped()) {
                 $shutdownEvent = new JobShutdownEvent($job, $metadata);
 
-                $this->eventDispatcher->dispatch(JobEvents::SHUTDOWN_EVENT, $shutdownEvent);
+                $this->eventDispatcher->dispatch($shutdownEvent, JobEvents::SHUTDOWN_EVENT);
             }
         }
     }

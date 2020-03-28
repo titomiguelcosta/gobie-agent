@@ -24,13 +24,12 @@ class GroomingChimpsApiClientCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Playground for the Grooming Chimps API')
-        ;
+            ->setDescription('Playground for the Grooming Chimps API');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $io->text($this->client->getJobs());
+        $io->text($this->client->getJob(1));
     }
 }
