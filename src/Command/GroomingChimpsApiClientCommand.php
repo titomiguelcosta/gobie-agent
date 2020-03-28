@@ -31,5 +31,7 @@ class GroomingChimpsApiClientCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
         $io->text($this->client->getJob(1));
+
+        return 0;
     }
 }

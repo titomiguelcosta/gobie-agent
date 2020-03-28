@@ -34,8 +34,7 @@ class DependenciesCommand extends Command
     {
         $this
             ->setName(self::$defaultName)
-            ->setDescription('Checks environment meets all the dependencies')
-        ;
+            ->setDescription('Checks environment meets all the dependencies');
     }
 
     /**
@@ -47,6 +46,8 @@ class DependenciesCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
         $this->checkApplication($this->git);
         $this->checkApplication($this->composer);
+
+        return 0;
     }
 
     /**

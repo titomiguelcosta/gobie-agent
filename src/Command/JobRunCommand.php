@@ -43,5 +43,7 @@ class JobRunCommand extends Command
 
         $job = $this->jobManager->populate($id, $data);
         $this->jobManager->execute($job);
+
+        return 0;
     }
 }
