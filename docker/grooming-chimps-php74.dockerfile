@@ -20,8 +20,11 @@ ENV PATH $PATH:/root/.composer/vendor/bin
 
 RUN composer install
 
+# avoid conflicts on global packages https://github.com/consolidation/cgr
+RUN composer global require consolidation/cgr
+
 # https://web-techno.net/code-quality-check-tools-php/
-RUN composer global require phpunit/phpunit \
+RUN cgr phpunit/phpunit \
     phpmd/phpmd phpmetrics/phpmetrics squizlabs/php_codesniffer \
     phpstan/phpstan phploc/phploc sebastian/phpcpd bmitch/churn-php \
     sensiolabs/security-checker nunomaduro/phpinsights \
