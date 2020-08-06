@@ -23,7 +23,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-pcntl": "*",
-        "composer/semver": "^1.5",
+        "composer/semver": "^3.0",
         "doctrine/lexer": "^1.0",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/console": "5.1.*",
