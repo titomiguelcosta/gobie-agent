@@ -113,7 +113,9 @@ final class Git implements ApplicationInterface
                 }
             });
 
-            return $process->getOutput();
+            if ($process->isSuccessful()) {
+                return trim(preg_replace('/\s+/', ' ', $process->getOutput()));
+            }
         }
 
         return null;
