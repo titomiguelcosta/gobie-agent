@@ -15,3 +15,6 @@ docker-push:
 	docker push titomiguelcosta/grooming-chimps-php73
 	docker push titomiguelcosta/grooming-chimps-php74
 	docker push titomiguelcosta/grooming-chimps-php80
+
+php-fix:
+	php vendor/bin/php-cs-fixer fix src/

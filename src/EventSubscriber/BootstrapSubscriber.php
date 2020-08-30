@@ -49,9 +49,12 @@ final class BootstrapSubscriber implements EventSubscriberInterface
             ]);
             $event->stopPropagation();
         } elseif ($process->isSuccessful()) {
-            $metadata['commit_hash'] = $this->git->getCommitHash($metadata['path']);
-            $event->setMetadata($metadata);
             printf('Cloned job: %s at %s.%s', $job->getRepo(), $metadata['path'], PHP_EOL);
+
+            $metadata['commit_hash'] = $this->git->getCommitHash($metadata['path']);
+            $this->client->putJob($job->getId(), [
+                'hashSha' => $metadata['commit_hash'],
+            ]);
         } else {
             echo 'Failed to clone repo.'.PHP_EOL;
             $this->client->putJob($job->getId(), [

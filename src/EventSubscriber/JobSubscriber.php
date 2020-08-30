@@ -30,11 +30,9 @@ class JobSubscriber implements EventSubscriberInterface
     public function startedJob(JobBootEvent $event): void
     {
         $job = $event->getJob();
-        $metadata = $event->getMetadata();
 
         $this->client->putJob($job->getId(), [
             'status' => Job::STATUS_STARTED,
-            'headSha' => $metadata['commit_hash'] ?? null,
             'startedAt' => $this->dateTime->now(),
         ]);
     }

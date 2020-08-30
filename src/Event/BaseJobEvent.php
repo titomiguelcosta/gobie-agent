@@ -26,9 +26,4 @@ abstract class BaseJobEvent extends GenericEvent
     {
         return $this->metadata;
     }
-
-    public function setMetadata(ArrayObject $metadata): void
-    {
-        $this->metadata = $metadata;
-    }
 }
