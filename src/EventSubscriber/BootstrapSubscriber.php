@@ -41,7 +41,7 @@ final class BootstrapSubscriber implements EventSubscriberInterface
         $process = $this->git->clone($job->getRepo(), $job->getBranch(), $metadata['path']);
 
         if (null === $process) {
-            echo 'Git is not installed.'.PHP_EOL;
+            echo 'Git is not installed.' . PHP_EOL;
             $this->client->putJob($job->getId(), [
                 'status' => Job::STATUS_ABORTED,
                 'errors' => ['Git is not installed'],
@@ -53,10 +53,10 @@ final class BootstrapSubscriber implements EventSubscriberInterface
 
             $metadata['commit_hash'] = $this->git->getCommitHash($metadata['path']);
             $this->client->putJob($job->getId(), [
-                'hashSha' => $metadata['commit_hash'],
+                'commitHash' => $metadata['commit_hash'],
             ]);
         } else {
-            echo 'Failed to clone repo.'.PHP_EOL;
+            echo 'Failed to clone repo.' . PHP_EOL;
             $this->client->putJob($job->getId(), [
                 'status' => Job::STATUS_ABORTED,
                 'errors' => ['Failed to clone repo'],
