@@ -114,7 +114,11 @@ final class Git implements ApplicationInterface
             });
 
             if ($process->isSuccessful()) {
-                return trim(preg_replace('/\s+/', ' ', $process->getOutput()));
+                $commitHash = trim(preg_replace('/\s+/', ' ', $process->getOutput()));
+
+                echo 'Commit hash: '.$commitHash;
+
+                return $commitHash;
             }
         }
 
