@@ -16,9 +16,6 @@ final class ComposerVersionParser
      */
     private $version = null;
 
-    /**
-     * @param ComposerVersionLexer $composerVersionLexer
-     */
     public function __construct(ComposerVersionLexer $composerVersionLexer)
     {
         $this->lexer = $composerVersionLexer;

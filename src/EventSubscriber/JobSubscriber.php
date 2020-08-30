@@ -2,23 +2,19 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Event\JobShutdownEvent;
-use App\Event\JobEvents;
 use App\Api\GroomingChimps\Client;
-use App\Model\Job;
 use App\Event\JobBootEvent;
+use App\Event\JobEvents;
+use App\Event\JobShutdownEvent;
+use App\Model\Job;
 use App\Util\DateTime;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class JobSubscriber implements EventSubscriberInterface
 {
     private $client;
     private $dateTime;
 
-    /**
-     * @param Client   $client
-     * @param DateTime $dateTime
-     */
     public function __construct(Client $client, DateTime $dateTime)
     {
         $this->client = $client;
@@ -26,8 +22,6 @@ class JobSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param JobBootEvent $event
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -36,15 +30,16 @@ class JobSubscriber implements EventSubscriberInterface
     public function startedJob(JobBootEvent $event): void
     {
         $job = $event->getJob();
+        $metadata = $event->getMetadata();
+
         $this->client->putJob($job->getId(), [
             'status' => Job::STATUS_STARTED,
+            'headSha' => $metadata['commit_hash'] ?? null,
             'startedAt' => $this->dateTime->now(),
         ]);
     }
 
     /**
-     * @param JobShutdownEvent $event
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface

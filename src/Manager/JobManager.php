@@ -2,33 +2,24 @@
 
 namespace App\Manager;
 
-use App\Model\Task;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use App\Model\Job;
-use App\Event\JobEvents;
 use App\Event\JobBootEvent;
+use App\Event\JobEvents;
 use App\Event\JobExecuteEvent;
 use App\Event\JobShutdownEvent;
+use App\Model\Job;
+use App\Model\Task;
 use ArrayObject;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class JobManager
 {
     private $eventDispatcher;
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
     public function __construct(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * @param int   $id
-     * @param array $data
-     *
-     * @return Job
-     */
     public function populate(int $id, array $data): Job
     {
         $job = new Job($id, $data['project']['repo'], $data['branch']);
@@ -41,9 +32,6 @@ final class JobManager
         return $job;
     }
 
-    /**
-     * @param Job $job
-     */
     public function execute(Job $job): void
     {
         $metadata = new ArrayObject();

@@ -2,8 +2,8 @@
 
 namespace App\Api\GroomingChimps;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Client
 {
@@ -13,10 +13,6 @@ class Client
     /** @var string */
     private $authToken;
 
-    /**
-     * @param HttpClientInterface $httpClient
-     * @param string|null         $authToken
-     */
     public function __construct(
         HttpClientInterface $httpClient,
         ?string $authToken = null
@@ -26,10 +22,6 @@ class Client
     }
 
     /**
-     * @param int $id
-     *
-     * @return array
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -47,11 +39,6 @@ class Client
     }
 
     /**
-     * @param int   $id
-     * @param array $data
-     *
-     * @return array
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -69,11 +56,6 @@ class Client
     }
 
     /**
-     * @param int   $id
-     * @param array $data
-     *
-     * @return array
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -90,11 +72,6 @@ class Client
         return $response->toArray();
     }
 
-    /**
-     * @param array $data
-     *
-     * @return array
-     */
     private function getOptions(array $data): array
     {
         $options = [];

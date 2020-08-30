@@ -24,11 +24,6 @@ final class Job
     /** @var array */
     private $tasks;
 
-    /**
-     * @param int    $id
-     * @param string $repo
-     * @param string $branch
-     */
     public function __construct(int $id, string $repo, string $branch)
     {
         $this->id = $id;
@@ -38,41 +33,26 @@ final class Job
         $this->tasks = [];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getRepo(): string
     {
         return $this->repo;
     }
 
-    /**
-     * @return string
-     */
     public function getBranch(): string
     {
         return $this->branch;
     }
 
-    /**
-     * @param Task $task
-     */
     public function addTask(Task $task): void
     {
         $this->tasks[] = $task;

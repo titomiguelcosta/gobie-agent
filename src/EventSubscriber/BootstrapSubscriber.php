@@ -2,14 +2,14 @@
 
 namespace App\EventSubscriber;
 
+use App\Api\GroomingChimps\Client;
 use App\Application\Composer;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use App\Application\Git;
 use App\Event\JobBootEvent;
 use App\Event\JobEvents;
-use App\Application\Git;
-use App\Api\GroomingChimps\Client;
 use App\Model\Job;
 use App\Util\DateTime;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Process\Process;
 
 final class BootstrapSubscriber implements EventSubscriberInterface
@@ -19,12 +19,6 @@ final class BootstrapSubscriber implements EventSubscriberInterface
     private $client;
     private $dateTime;
 
-    /**
-     * @param Git      $git
-     * @param Composer $composer
-     * @param Client   $client
-     * @param DateTime $dateTime
-     */
     public function __construct(Git $git, Composer $composer, Client $client, DateTime $dateTime)
     {
         $this->git = $git;
@@ -34,8 +28,6 @@ final class BootstrapSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param JobBootEvent $event
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
@@ -57,6 +49,8 @@ final class BootstrapSubscriber implements EventSubscriberInterface
             ]);
             $event->stopPropagation();
         } elseif ($process->isSuccessful()) {
+            $metadata['commit_hash'] = $this->git->getCommitHash($metadata['path']);
+            $event->setMetadata($metadata);
             printf('Cloned job: %s at %s.%s', $job->getRepo(), $metadata['path'], PHP_EOL);
         } else {
             echo 'Failed to clone repo.'.PHP_EOL;
@@ -74,7 +68,6 @@ final class BootstrapSubscriber implements EventSubscriberInterface
      *
      * @see https://www.previousnext.com.au/blog/managing-composer-github-access-personal-access-tokens
      *
-     * @param JobBootEvent $event
      * @param Process|null $process
      */
     public function composerInstall(JobBootEvent $event): void

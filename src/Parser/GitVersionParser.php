@@ -16,9 +16,6 @@ final class GitVersionParser
      */
     private $version = null;
 
-    /**
-     * @param GitVersionLexer $gitVersionLexer
-     */
     public function __construct(GitVersionLexer $gitVersionLexer)
     {
         $this->lexer = $gitVersionLexer;

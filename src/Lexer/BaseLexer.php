@@ -28,8 +28,6 @@ abstract class BaseLexer extends AbstractLexer
 
     /**
      * Lexical non-catchable patterns.
-     *
-     * @return array
      */
     protected function getNonCatchablePatterns(): array
     {

@@ -2,15 +2,12 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use App\Event\JobBootEvent;
 use App\Event\JobEvents;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ConfigureSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @param JobBootEvent $event
-     */
     public function configuration(JobBootEvent $event): void
     {
         $metadata = $event->getMetadata();

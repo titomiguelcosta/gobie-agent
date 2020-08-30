@@ -4,11 +4,11 @@ namespace App\Command;
 
 use App\Application\ApplicationInterface;
 use App\Application\Composer;
+use App\Application\Git;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use App\Application\Git;
 
 class DependenciesCommand extends Command
 {
@@ -19,10 +19,6 @@ class DependenciesCommand extends Command
     /** @var SymfonyStyle */
     private $io;
 
-    /**
-     * @param Git      $git
-     * @param Composer $composer
-     */
     public function __construct(Git $git, Composer $composer)
     {
         parent::__construct();
@@ -37,10 +33,6 @@ class DependenciesCommand extends Command
             ->setDescription('Checks environment meets all the dependencies');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->io = new SymfonyStyle($input, $output);
@@ -50,11 +42,6 @@ class DependenciesCommand extends Command
         return 0;
     }
 
-    /**
-     * @param ApplicationInterface $app
-     *
-     * @return ApplicationInterface
-     */
     private function checkApplication(ApplicationInterface $app): ApplicationInterface
     {
         if (!$app->isInstalled()) {

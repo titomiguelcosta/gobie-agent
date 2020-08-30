@@ -15,8 +15,6 @@ class GitVersionLexer extends BaseLexer
 
     /**
      * Lexical catchable patterns.
-     *
-     * @return array
      */
     protected function getCatchablePatterns(): array
     {
@@ -31,8 +29,6 @@ class GitVersionLexer extends BaseLexer
      * Retrieve token type. Also processes the token value if necessary.
      *
      * @param string $value
-     *
-     * @return int
      */
     protected function getType(&$value): int
     {

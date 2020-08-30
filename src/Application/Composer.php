@@ -2,10 +2,10 @@
 
 namespace App\Application;
 
-use Symfony\Component\Process\Process;
+use App\Lexer\ComposerVersionLexer;
 use App\Parser\ComposerVersionParser;
 use Composer\Semver\Comparator;
-use App\Lexer\ComposerVersionLexer;
+use Symfony\Component\Process\Process;
 
 final class Composer implements ApplicationInterface
 {
@@ -20,9 +20,6 @@ final class Composer implements ApplicationInterface
     /** @var bool */
     private $isSupported = false;
 
-    /**
-     * @param Process|null $process
-     */
     public function __construct(?Process $process = null)
     {
         $process = $process ?? new Process(['composer', '--version']);
@@ -40,44 +37,26 @@ final class Composer implements ApplicationInterface
         }
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return 'Composer';
     }
 
-    /**
-     * @return string|null
-     */
     public function getVersion(): ?string
     {
         return $this->version;
     }
 
-    /**
-     * @return bool
-     */
     public function isInstalled(): bool
     {
         return $this->isInstalled;
     }
 
-    /**
-     * @return bool
-     */
     public function isSupported(): bool
     {
         return $this->isSupported;
     }
 
-    /**
-     * @param string       $path
-     * @param Process|null $process
-     *
-     * @return Process
-     */
     public function install(string $path, ?Process $process = null): Process
     {
         $process = $process ?? new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $path);

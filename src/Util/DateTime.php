@@ -2,14 +2,12 @@
 
 namespace App\Util;
 
-use DateTimeImmutable;
 use DateTime as BaseDateTime;
+use DateTimeImmutable;
 
 class DateTime
 {
     /**
-     * @return string
-     *
      * @throws \Exception
      */
     public function now(): string

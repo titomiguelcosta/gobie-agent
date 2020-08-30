@@ -2,13 +2,13 @@
 
 namespace App\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use App\Event\JobExecuteEvent;
-use App\Event\JobEvents;
-use Symfony\Component\Process\Process;
 use App\Api\GroomingChimps\Client;
+use App\Event\JobEvents;
+use App\Event\JobExecuteEvent;
 use App\Model\Task;
 use App\Util\DateTime;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Process\Process;
 
 class TaskSubscriber implements EventSubscriberInterface
 {
@@ -18,10 +18,6 @@ class TaskSubscriber implements EventSubscriberInterface
     /** @var DateTime */
     private $dateTime;
 
-    /**
-     * @param Client   $client
-     * @param DateTime $dateTime
-     */
     public function __construct(Client $client, DateTime $dateTime)
     {
         $this->client = $client;
@@ -29,8 +25,6 @@ class TaskSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param JobExecuteEvent $event
-     *
      * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
      * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface

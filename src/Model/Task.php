@@ -29,12 +29,6 @@ final class Task
     /** @var null */
     private $process = null;
 
-    /**
-     * @param int        $id
-     * @param string     $name
-     * @param string     $command
-     * @param array|null $options
-     */
     public function __construct(int $id, string $name, string $command, ?array $options)
     {
         $this->id = $id;
@@ -43,57 +37,36 @@ final class Task
         $this->options = $options ?? [];
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getCommand(): string
     {
         return $this->command;
     }
 
-    /**
-     * @return array
-     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
-    /**
-     * @param Process $process
-     */
     public function setProcess(Process $process)
     {
         $this->process = $process;
     }
 
-    /**
-     * @return Process|null
-     */
     public function getProcess(): ?Process
     {
         return $this->process;
     }
 
-    /**
-     * @return bool
-     */
     public function shouldCwd(): bool
     {
         return array_key_exists('cwd', $this->options) && $this->options['cwd'];
@@ -101,8 +74,6 @@ final class Task
 
     /**
      * @param array $options
-     *
-     * @return string
      *
      * @throws \Twig\Error\LoaderError
      * @throws \Twig\Error\RuntimeError
