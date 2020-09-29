@@ -16,5 +16,8 @@ docker-push:
 	docker push titomiguelcosta/grooming-chimps-php74
 	docker push titomiguelcosta/grooming-chimps-php80
 
+docker-ssh:
+	docker run --entrypoint /bin/bash -it titomiguelcosta/grooming-chimps-php74
+
 php-fix:
 	php vendor/bin/php-cs-fixer fix src/
