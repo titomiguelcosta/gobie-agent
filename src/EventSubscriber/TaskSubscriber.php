@@ -58,8 +58,8 @@ class TaskSubscriber implements EventSubscriberInterface
 
                 $this->client->putTask($task->getId(), [
                     'status' => $process->isSuccessful() ? Task::STATUS_SUCCEEDED : Task::STATUS_FAILED,
-                    'output' => trim(preg_replace('/\s+/', ' ', $process->getOutput())),
-                    'errorOutput' => trim(preg_replace('/\s+/', ' ', $process->getErrorOutput())),
+                    'output' => $this->parseOutput($process->getOutput(), $metadata['path']),
+                    'errorOutput' => $this->parseOutput($process->getErrorOutput(), $metadata['path']),
                     'exitCode' => $process->getExitCode(),
                     'finishedAt' => $this->dateTime->now(),
                 ]);
@@ -85,5 +85,27 @@ class TaskSubscriber implements EventSubscriberInterface
         return [
             JobEvents::EXECUTE_EVENT => 'executeTasks',
         ];
+    }
+
+    private function parseOutput(string $output, string $path): string
+    {
+        $output = trim($output);
+        $output = stripslashes($output);
+        $output = str_replace(["\r", "\n", $path], '', $output);
+
+        $json = json_decode(
+            $output,
+            true,
+            JSON_INVALID_UTF8_IGNORE
+        );
+
+        if (JSON_ERROR_NONE === json_last_error()) {
+            $output = json_encode(
+                $json,
+                JSON_INVALID_UTF8_IGNORE | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES
+            );
+        }
+
+        return $output;
     }
 }
