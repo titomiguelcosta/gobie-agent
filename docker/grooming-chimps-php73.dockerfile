@@ -24,11 +24,11 @@ RUN composer install
 RUN composer global require consolidation/cgr
 
 # https://web-techno.net/code-quality-check-tools-php/
-RUN cgr phpunit/phpunit \
-    phpmd/phpmd phpmetrics/phpmetrics squizlabs/php_codesniffer \
-    phpstan/phpstan phploc/phploc sebastian/phpcpd bmitch/churn-php \
-    sensiolabs/security-checker nunomaduro/phpinsights \
-    vimeo/psalm
+RUN cgr \ 
+    phpmd/phpmd:2.9.1 squizlabs/php_codesniffer:3.5.6 \
+    phpstan/phpstan:0.12.48 phploc/phploc:6.0.2 \ 
+    bmitch/churn-php:1.0.3 sensiolabs/security-checker:6.0 \ 
+    nunomaduro/phpinsights:1.14.0 vimeo/psalm:3.16
 
 ENTRYPOINT ["php", "bin/console"]
 
