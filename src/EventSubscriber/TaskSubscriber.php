@@ -90,8 +90,8 @@ class TaskSubscriber implements EventSubscriberInterface
     private function parseOutput(string $output, string $path): string
     {
         $output = trim($output);
-        $output = stripslashes($output);
-        $output = str_replace(["\r", "\n", $path], '', $output);
+        // remove basename from file paths
+        $output = str_replace($path . '/', '', $output);
 
         $json = json_decode(
             $output,
@@ -102,7 +102,7 @@ class TaskSubscriber implements EventSubscriberInterface
         if (JSON_ERROR_NONE === json_last_error()) {
             $output = json_encode(
                 $json,
-                JSON_INVALID_UTF8_IGNORE | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_LINE_TERMINATORS | JSON_UNESCAPED_SLASHES
+                JSON_INVALID_UTF8_IGNORE | JSON_UNESCAPED_SLASHES
             );
         }
 
