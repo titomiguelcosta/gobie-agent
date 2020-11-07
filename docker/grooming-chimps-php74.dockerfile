@@ -18,7 +18,7 @@ RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN php -r "unlink('composer-setup.php');"
 ENV PATH $PATH:/root/.composer/vendor/bin
 
-RUN composer install
+RUN composer install --ignore-platform-reqs
 
 # avoid conflicts on global packages https://github.com/consolidation/cgr
 RUN composer global require consolidation/cgr
