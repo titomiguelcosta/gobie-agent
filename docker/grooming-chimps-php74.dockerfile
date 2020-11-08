@@ -9,13 +9,15 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y git zip libzip-dev
 
-RUN docker-php-ext-install pcntl
-RUN docker-php-ext-install zip
+# install php deps
+RUN docker-php-ext-install pcntl && \
+    docker-php-ext-install zip
 
 # install composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
-RUN php -r "unlink('composer-setup.php');"
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
+    php -r "unlink('composer-setup.php');"
+
 ENV PATH $PATH:/root/.composer/vendor/bin
 
 RUN composer install --ignore-platform-reqs
