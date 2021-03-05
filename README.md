@@ -1,18 +1,22 @@
-# Agent for Grooming Chimps 
+# Agent for Gobie
 
 The agent is responsible for executing a job.
 
-It runs on AWS Batch. And reports back to the API.
+It runs on AWS Batch and reports back to the API.
 
 ## Executing
 
 The agent runs in pre-compiled docker images on AWS Batch.
-At the moment, only one docker image is available.
-Configuration is the docker directory and there are make commands to build it.
+
+At the moment, there are versions for PHP 7.3, 7.4 and 8.0.
+
+Configuration is in the docker directory and there are make commands to build it.
 
 ### Images
 
-* titomiguelcosta/grooming-chimps-php73: PHP 7.3 with several PHP packages pre-installed
+* (titomiguelcosta/grooming-chimps-php73)[https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php73]: PHP 7.3
+* (titomiguelcosta/grooming-chimps-php74)[https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php74]: PHP 7.4
+* (titomiguelcosta/grooming-chimps-php80)[https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php80]: PHP 8.0
 
 ### Environment variables
 
