@@ -14,9 +14,9 @@ Configuration is in the docker directory and there are make commands to build it
 
 ### Images
 
-* (titomiguelcosta/grooming-chimps-php73)[https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php73]: PHP 7.3
-* (titomiguelcosta/grooming-chimps-php74)[https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php74]: PHP 7.4
-* (titomiguelcosta/grooming-chimps-php80)[https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php80]: PHP 8.0
+* [titomiguelcosta/grooming-chimps-php73](https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php73): PHP 7.3
+* [titomiguelcosta/grooming-chimps-php74](https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php74): PHP 7.4
+* [titomiguelcosta/grooming-chimps-php80](https://hub.docker.com/r/titomiguelcosta/grooming-chimps-php80): PHP 8.0
 
 ### Environment variables
 
