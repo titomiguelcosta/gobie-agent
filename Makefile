@@ -19,5 +19,9 @@ docker-push:
 docker-ssh:
 	docker run --entrypoint /bin/bash -it titomiguelcosta/grooming-chimps-php74
 
-php-fix:
+php-cs-fixer:
 	php vendor/bin/php-cs-fixer fix src/
+
+phpunit:
+	php vendor/bin/phpunit
+

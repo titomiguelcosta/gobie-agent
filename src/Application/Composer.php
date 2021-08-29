@@ -24,7 +24,7 @@ final class Composer implements ApplicationInterface
     /** @var LoggerInterface|null */
     private $logger;
 
-    public function __construct(?Process $process = null, LoggerInterface $logger = null)
+    public function __construct(?Process $process = null, ?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
 
@@ -33,13 +33,13 @@ final class Composer implements ApplicationInterface
 
         if ($process->isSuccessful()) {
             $this->isInstalled = true;
-        }
 
-        $composerVersionParser = new ComposerVersionParser(new ComposerVersionLexer($process->getOutput()));
-        $this->version = $composerVersionParser->getVersion();
+            $composerVersionParser = new ComposerVersionParser(new ComposerVersionLexer($process->getOutput()));
+            $this->version = $composerVersionParser->getVersion();
 
-        if (Comparator::greaterThanOrEqualTo($composerVersionParser->getVersion(), self::MINIMUM_VERSION)) {
-            $this->isSupported = true;
+            if (Comparator::greaterThanOrEqualTo($composerVersionParser->getVersion(), self::MINIMUM_VERSION)) {
+                $this->isSupported = true;
+            }
         }
     }
 

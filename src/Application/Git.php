@@ -33,13 +33,13 @@ final class Git implements ApplicationInterface
 
         if ($process->isSuccessful()) {
             $this->isInstalled = true;
-        }
 
-        $gitVersionParser = new GitVersionParser(new GitVersionLexer($process->getOutput()));
-        $this->version = $gitVersionParser->getVersion();
+            $gitVersionParser = new GitVersionParser(new GitVersionLexer($process->getOutput()));
+            $this->version = $gitVersionParser->getVersion();
 
-        if (Comparator::greaterThanOrEqualTo($gitVersionParser->getVersion(), self::MINIMUM_VERSION)) {
-            $this->isSupported = true;
+            if (Comparator::greaterThanOrEqualTo($gitVersionParser->getVersion(), self::MINIMUM_VERSION)) {
+                $this->isSupported = true;
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 # Agent for Gobie
 
-The agent is responsible for executing a job.
+The agent is responsible for executing a job. A job consists of multiple tasks. A task is not more than a script that runs on the command line.
 
 It runs on AWS Batch and reports back to the API.
 
@@ -24,4 +24,3 @@ GROOMING_CHIMPS_API_AUTH_TOKEN - Authentication token of the user that requested
 GROOMING_CHIMPS_API_USER_USERNAME - The username of the user that started the job (optional)
 GROOMING_CHIMPS_API_BASE_URI - The URL of the API it reports the job results 
 GROOMING_CHIMPS_API_JOB_ID - ID of the job to process
-
