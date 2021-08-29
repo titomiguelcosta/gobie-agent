@@ -5,6 +5,7 @@ namespace App\Application;
 use App\Lexer\ComposerVersionLexer;
 use App\Parser\ComposerVersionParser;
 use Composer\Semver\Comparator;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 
 final class Composer implements ApplicationInterface
@@ -20,8 +21,13 @@ final class Composer implements ApplicationInterface
     /** @var bool */
     private $isSupported = false;
 
-    public function __construct(?Process $process = null)
+    /** @var LoggerInterface|null */
+    private $logger;
+
+    public function __construct(?Process $process = null, LoggerInterface $logger = null)
     {
+        $this->logger = $logger;
+
         $process = $process ?? new Process(['composer', '--version']);
         $process->run();
 
@@ -63,10 +69,12 @@ final class Composer implements ApplicationInterface
         $process->setTimeout(0);
         $process->setIdleTimeout(0);
         $process->run(function ($type, $buffer) {
-            if (Process::ERR === $type) {
-                echo 'Composer ERR > '.$buffer;
-            } else {
-                echo 'Composer OUT > '.$buffer;
+            if ($this->logger) {
+                if (Process::ERR === $type) {
+                    $this->logger->error('Composer ERR > ' . $buffer);
+                } else {
+                    $this->logger->debug('Composer OUT > ' . $buffer);
+                }
             }
         });
 

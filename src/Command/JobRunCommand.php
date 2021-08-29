@@ -2,28 +2,24 @@
 
 namespace App\Command;
 
-use App\Api\GroomingChimps\Client;
+use App\Api\Gobie\Client;
 use App\Manager\JobManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JobRunCommand extends Command
 {
     protected static $defaultName = 'app:job:run';
 
-    private $eventDispatcher;
     private $jobManager;
     private $client;
 
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         JobManager $jobManager,
         Client $client
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->jobManager = $jobManager;
         $this->client = $client;
         parent::__construct();

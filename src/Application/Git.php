@@ -5,6 +5,7 @@ namespace App\Application;
 use App\Lexer\GitVersionLexer;
 use App\Parser\GitVersionParser;
 use Composer\Semver\Comparator;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 
 final class Git implements ApplicationInterface
@@ -20,8 +21,13 @@ final class Git implements ApplicationInterface
     /** @var bool */
     private $isSupported = false;
 
-    public function __construct(?Process $process = null)
+    /** @var LoggerInterface|null */
+    private $logger;
+
+    public function __construct(?Process $process = null, LoggerInterface $logger = null)
     {
+        $this->logger = $logger;
+
         $process = $process ?? new Process(['git', '--version']);
         $process->run();
 
@@ -80,13 +86,14 @@ final class Git implements ApplicationInterface
 
             $process = $process ?? new Process($command);
             $process->run(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    echo 'ERR > '.$buffer;
-                } else {
-                    echo 'OUT > '.$buffer;
+                if ($this->logger) {
+                    if (Process::ERR === $type) {
+                        $this->logger->error('Git ERR > ' . $buffer);
+                    } else {
+                        $this->logger->debug('Git OUT > ' . $buffer);
+                    }
                 }
             });
-
             return $process;
         }
 
@@ -106,17 +113,21 @@ final class Git implements ApplicationInterface
 
             $process = $process ?? new Process($command, $path);
             $process->run(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    echo 'ERR > '.$buffer;
-                } else {
-                    echo 'OUT > '.$buffer;
+                if ($this->logger) {
+                    if (Process::ERR === $type) {
+                        $this->logger->error('Git ERR > ' . $buffer);
+                    } else {
+                        $this->logger->debug('Git OUT > ' . $buffer);
+                    }
                 }
             });
 
             if ($process->isSuccessful()) {
                 $commitHash = trim(preg_replace('/\s+/', ' ', $process->getOutput()));
 
-                echo 'Commit hash: '.$commitHash;
+                if ($this->logger) {
+                    $this->logger->debug('Git commit hash: ' . $commitHash);
+                }
 
                 return $commitHash;
             }

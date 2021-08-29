@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\Api\GroomingChimps\Client;
+use App\Api\Gobie\Client;
 use App\Event\JobBootEvent;
 use App\Event\JobEvents;
 use App\Event\JobShutdownEvent;
