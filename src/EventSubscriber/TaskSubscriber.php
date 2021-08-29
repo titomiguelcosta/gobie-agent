@@ -91,7 +91,7 @@ class TaskSubscriber implements EventSubscriberInterface
     {
         $output = trim($output);
         // remove basename from file paths
-        $output = str_replace($path . '/', '', $output);
+        $output = str_replace($path.'/', '', $output);
 
         $json = json_decode(
             $output,

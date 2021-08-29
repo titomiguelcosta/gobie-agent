@@ -88,12 +88,13 @@ final class Git implements ApplicationInterface
             $process->run(function ($type, $buffer) {
                 if ($this->logger) {
                     if (Process::ERR === $type) {
-                        $this->logger->error('Git ERR > ' . $buffer);
+                        $this->logger->error('Git ERR > '.$buffer);
                     } else {
-                        $this->logger->debug('Git OUT > ' . $buffer);
+                        $this->logger->debug('Git OUT > '.$buffer);
                     }
                 }
             });
+
             return $process;
         }
 
@@ -115,9 +116,9 @@ final class Git implements ApplicationInterface
             $process->run(function ($type, $buffer) {
                 if ($this->logger) {
                     if (Process::ERR === $type) {
-                        $this->logger->error('Git ERR > ' . $buffer);
+                        $this->logger->error('Git ERR > '.$buffer);
                     } else {
-                        $this->logger->debug('Git OUT > ' . $buffer);
+                        $this->logger->debug('Git OUT > '.$buffer);
                     }
                 }
             });
@@ -126,7 +127,7 @@ final class Git implements ApplicationInterface
                 $commitHash = trim(preg_replace('/\s+/', ' ', $process->getOutput()));
 
                 if ($this->logger) {
-                    $this->logger->debug('Git commit hash: ' . $commitHash);
+                    $this->logger->debug('Git commit hash: '.$commitHash);
                 }
 
                 return $commitHash;

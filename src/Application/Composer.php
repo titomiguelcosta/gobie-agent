@@ -71,9 +71,9 @@ final class Composer implements ApplicationInterface
         $process->run(function ($type, $buffer) {
             if ($this->logger) {
                 if (Process::ERR === $type) {
-                    $this->logger->error('Composer ERR > ' . $buffer);
+                    $this->logger->error('Composer ERR > '.$buffer);
                 } else {
-                    $this->logger->debug('Composer OUT > ' . $buffer);
+                    $this->logger->debug('Composer OUT > '.$buffer);
                 }
             }
         });
