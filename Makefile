@@ -24,4 +24,3 @@ php-cs-fixer:
 
 phpunit:
 	php vendor/bin/phpunit
-
