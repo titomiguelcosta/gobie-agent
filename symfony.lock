@@ -1,4 +1,7 @@
 {
+    "php": {
+        "version": "7.3"
+    },
     "symfony/password-hasher": {
         "version": "v5.3.4"
     },
