@@ -1,5 +1,5 @@
 {
-    "name": "titomiguelcosta/grooming-chimps-agent",
+    "name": "titomiguelcosta/gobie-agent",
     "description": "Responsible for executing all the tasks associated with a job and report back to the API",
     "type": "project",
     "license": "MIT",
