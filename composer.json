@@ -21,7 +21,7 @@
         }
     ],
     "require": {
-        "php": ">=8.1.0",
+        "php": ">=8.0.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-pcntl": "*",
