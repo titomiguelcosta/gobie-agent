@@ -20,14 +20,13 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 ENV PATH $PATH:/root/.composer/vendor/bin
 
-RUN rm -f symfony.lock composer.lock && \
+RUN rm -f vendor/ symfony.lock composer.lock && \
     composer update --ignore-platform-reqs --no-interaction --no-progress --optimize-autoloader --no-cache
 
-# avoid conflicts on global packages https://github.com/consolidation/cgr
-RUN composer --ignore-platform-reqs global require consolidation/cgr
+RUN composer global config --no-plugins allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
 
 # https://web-techno.net/code-quality-check-tools-php/
-RUN cgr --ignore-platform-reqs \
+RUN composer global require --ignore-platform-reqs \
     phpmd/phpmd:2.9.1 squizlabs/php_codesniffer:3.5.6 \
     phpstan/phpstan:0.12.48 phploc/phploc:6.0.2 \ 
     bmitch/churn-php:1.0.3 sensiolabs/security-checker:6.0 \ 
