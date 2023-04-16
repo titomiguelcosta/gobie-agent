@@ -21,7 +21,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 ENV PATH $PATH:/root/.composer/vendor/bin
 
 RUN rm -f symfony.lock composer.lock && \
-    composer update --ignore-platform-reqs --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader --no-cache
+    composer update --ignore-platform-reqs --no-interaction --no-plugins --no-progress --optimize-autoloader --no-cache
 
 # avoid conflicts on global packages https://github.com/consolidation/cgr
 RUN composer --ignore-platform-reqs global require consolidation/cgr
@@ -36,3 +36,4 @@ RUN cgr --ignore-platform-reqs \
 ENTRYPOINT ["php", "bin/console"]
 
 CMD ["app:dependencies"]
+
