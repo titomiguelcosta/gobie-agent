@@ -62,10 +62,7 @@
             "*": "dist"
         },
         "sort-packages": true,
-        "allow-plugins": {
-            "symfony/flex": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
+        "allow-plugins": true
     },
     "autoload": {
         "psr-4": {
