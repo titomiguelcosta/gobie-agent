@@ -28,6 +28,7 @@ class JobRunCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setName(self::$defaultName)
             ->setDescription('Run a job')
             ->addArgument('id', InputArgument::REQUIRED, 'ID of the job');
     }

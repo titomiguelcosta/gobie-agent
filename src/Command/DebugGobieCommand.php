@@ -24,6 +24,7 @@ class DebugGobieCommand extends Command
     protected function configure(): void
     {
         $this
+            ->setName(self::$defaultName)
             ->setDescription('Playground for the Gobies API');
     }
 
