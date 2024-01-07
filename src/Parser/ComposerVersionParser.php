@@ -11,7 +11,7 @@ final class ComposerVersionParser
     /**
      * @var string
      */
-    private $version = null;
+    private $version;
 
     public function __construct(ComposerVersionLexer $composerVersionLexer)
     {
@@ -19,9 +19,6 @@ final class ComposerVersionParser
         $this->parse();
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): ?string
     {
         return $this->version;

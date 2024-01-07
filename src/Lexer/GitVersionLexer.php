@@ -4,14 +4,14 @@ namespace App\Lexer;
 
 class GitVersionLexer extends BaseLexer
 {
-    const T_NONE = 0;
-    const T_GIT_KEYWORD = 1;
-    const T_VERSION_KEYWORD = 2;
-    const T_VERSION_NUMBER = 3;
-    const T_VERSION_STRING = 4;
+    public const T_NONE = 0;
+    public const T_GIT_KEYWORD = 1;
+    public const T_VERSION_KEYWORD = 2;
+    public const T_VERSION_NUMBER = 3;
+    public const T_VERSION_STRING = 4;
 
-    const REGEX_VERSION_STRING = '([0-9]+)\.([0-9]+)\.([0-9]+(?:\-[a-z]+)?)';
-    const REGEX_VERSION_NUMBER = '[0-9]+(?:\-[a-z]+)?';
+    public const REGEX_VERSION_STRING = '([0-9]+)\.([0-9]+)\.([0-9]+(?:\-[a-z]+)?)';
+    public const REGEX_VERSION_NUMBER = '[0-9]+(?:\-[a-z]+)?';
 
     /**
      * Lexical catchable patterns.

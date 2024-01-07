@@ -4,16 +4,16 @@ namespace App\Lexer;
 
 class ComposerVersionLexer extends BaseLexer
 {
-    const T_NONE = 0;
-    const T_COMPOSER_KEYWORD = 1;
-    const T_VERSION_KEYWORD = 2;
-    const T_VERSION_NUMBER = 3;
-    const T_VERSION_STRING = 4;
-    const T_DATE_STRING = 5;
+    public const T_NONE = 0;
+    public const T_COMPOSER_KEYWORD = 1;
+    public const T_VERSION_KEYWORD = 2;
+    public const T_VERSION_NUMBER = 3;
+    public const T_VERSION_STRING = 4;
+    public const T_DATE_STRING = 5;
 
-    const REGEX_VERSION_STRING = '([0-9]+)\.([0-9]+)\.([0-9]+(?:\-[a-z]+)?)';
-    const REGEX_VERSION_NUMBER = '[0-9]+(?:\-[a-z]+)?';
-    const REGEX_DATE = '[0-9]{4}\-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}';
+    public const REGEX_VERSION_STRING = '([0-9]+)\.([0-9]+)\.([0-9]+(?:\-[a-z]+)?)';
+    public const REGEX_VERSION_NUMBER = '[0-9]+(?:\-[a-z]+)?';
+    public const REGEX_DATE = '[0-9]{4}\-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}';
 
     /**
      * Lexical catchable patterns.

@@ -3,7 +3,6 @@
 namespace App\Event;
 
 use App\Model\Job;
-use ArrayObject;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 abstract class BaseJobEvent extends GenericEvent
@@ -11,7 +10,7 @@ abstract class BaseJobEvent extends GenericEvent
     protected $job;
     protected $metadata;
 
-    public function __construct(Job $job, ArrayObject $metadata)
+    public function __construct(Job $job, \ArrayObject $metadata)
     {
         $this->job = $job;
         $this->metadata = $metadata;
@@ -22,7 +21,7 @@ abstract class BaseJobEvent extends GenericEvent
         return $this->job;
     }
 
-    public function getMetadata(): ArrayObject
+    public function getMetadata(): \ArrayObject
     {
         return $this->metadata;
     }

@@ -8,7 +8,6 @@ use App\Event\JobExecuteEvent;
 use App\Event\JobShutdownEvent;
 use App\Model\Job;
 use App\Model\Task;
-use ArrayObject;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class JobManager
@@ -34,7 +33,7 @@ final class JobManager
 
     public function execute(Job $job): void
     {
-        $metadata = new ArrayObject();
+        $metadata = new \ArrayObject();
         $bootEvent = new JobBootEvent($job, $metadata);
         $this->eventDispatcher->dispatch($bootEvent, JobEvents::BOOT_EVENT);
 

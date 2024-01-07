@@ -10,10 +10,10 @@ use Symfony\Component\Process\Process;
 
 final class Composer implements ApplicationInterface
 {
-    const MINIMUM_VERSION = '1.8.0';
+    public const MINIMUM_VERSION = '1.8.0';
 
     /** @var string|null */
-    private $version = null;
+    private $version;
 
     /** @var bool */
     private $isInstalled = false;
@@ -24,7 +24,7 @@ final class Composer implements ApplicationInterface
     /** @var LoggerInterface|null */
     private $logger;
 
-    public function __construct(?Process $process = null, ?LoggerInterface $logger = null)
+    public function __construct(Process $process = null, LoggerInterface $logger = null)
     {
         $this->logger = $logger;
 
@@ -63,7 +63,7 @@ final class Composer implements ApplicationInterface
         return $this->isSupported;
     }
 
-    public function install(string $path, ?Process $process = null): Process
+    public function install(string $path, Process $process = null): Process
     {
         $process = $process ?? new Process(['composer', 'install', '--no-interaction', '--no-progress', '--ignore-platform-reqs'], $path);
         $process->setTimeout(0);

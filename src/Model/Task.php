@@ -8,17 +8,17 @@ use Twig\Loader\ArrayLoader;
 
 final class Task
 {
-    const STATUS_PENDING = 'pending';
-    const STATUS_RUNNING = 'running';
-    const STATUS_ABORTED = 'aborted';
-    const STATUS_FAILED = 'failed';
-    const STATUS_SUCCEEDED = 'succeeded';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_RUNNING = 'running';
+    public const STATUS_ABORTED = 'aborted';
+    public const STATUS_FAILED = 'failed';
+    public const STATUS_SUCCEEDED = 'succeeded';
 
     private $id;
     private $name;
     private $command;
     private $options;
-    private $process = null;
+    private $process;
 
     public function __construct(int $id, string $name, string $command, ?array $options)
     {

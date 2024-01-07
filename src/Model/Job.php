@@ -4,10 +4,10 @@ namespace App\Model;
 
 final class Job
 {
-    const STATUS_PENDING = 'pending';
-    const STATUS_STARTED = 'started';
-    const STATUS_FINISHED = 'finished';
-    const STATUS_ABORTED = 'aborted';
+    public const STATUS_PENDING = 'pending';
+    public const STATUS_STARTED = 'started';
+    public const STATUS_FINISHED = 'finished';
+    public const STATUS_ABORTED = 'aborted';
 
     /** @var int */
     private $id;

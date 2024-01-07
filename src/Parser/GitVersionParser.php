@@ -11,7 +11,7 @@ final class GitVersionParser
     /**
      * @var string
      */
-    private $version = null;
+    private $version;
 
     public function __construct(GitVersionLexer $gitVersionLexer)
     {

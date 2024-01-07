@@ -10,7 +10,6 @@ use App\Event\JobEvents;
 use App\Model\Job;
 use App\Util\DateTime;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Process\Process;
 
 final class BootstrapSubscriber implements EventSubscriberInterface
 {
@@ -64,8 +63,6 @@ final class BootstrapSubscriber implements EventSubscriberInterface
      * To manage the GitHub token.
      *
      * @see https://www.previousnext.com.au/blog/managing-composer-github-access-personal-access-tokens
-     *
-     * @param Process|null $process
      */
     public function composerInstall(JobBootEvent $event): void
     {

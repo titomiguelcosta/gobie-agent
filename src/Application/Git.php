@@ -10,10 +10,10 @@ use Symfony\Component\Process\Process;
 
 final class Git implements ApplicationInterface
 {
-    const MINIMUM_VERSION = '2.11.0';
+    public const MINIMUM_VERSION = '2.11.0';
 
     /** @var string|null */
-    private $version = null;
+    private $version;
 
     /** @var bool */
     private $isInstalled = false;
@@ -24,7 +24,7 @@ final class Git implements ApplicationInterface
     /** @var LoggerInterface|null */
     private $logger;
 
-    public function __construct(?Process $process = null, LoggerInterface $logger = null)
+    public function __construct(Process $process = null, LoggerInterface $logger = null)
     {
         $this->logger = $logger;
 
@@ -66,8 +66,8 @@ final class Git implements ApplicationInterface
     public function clone(
         string $repo,
         string $branch = 'master',
-        ?string $path = null,
-        ?Process $process = null
+        string $path = null,
+        Process $process = null
     ): ?Process {
         if ($this->isInstalled()) {
             $path = null === $path ? sys_get_temp_dir() : $path;
@@ -103,7 +103,7 @@ final class Git implements ApplicationInterface
 
     public function getCommitHash(
         string $path,
-        ?Process $process = null
+        Process $process = null
     ): ?string {
         if ($this->isInstalled()) {
             $command = [
