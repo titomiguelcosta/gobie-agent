@@ -7,15 +7,15 @@ docker-purge-images:
 	docker rmi --force $(shell docker images -qa)
 
 docker-build:
-	docker build -t titomiguelcosta/gobie-php80 -f docker/gobie-php80.dockerfile .
-	docker build -t titomiguelcosta/gobie-php81 -f docker/gobie-php81.dockerfile .
+	docker build -t titomiguelcosta/gobie-php82 -f docker/gobie-php82.dockerfile .
+	docker build -t titomiguelcosta/gobie-php82 -f docker/gobie-php83.dockerfile .
 
 docker-push:
-	docker push titomiguelcosta/gobie-php80
-	docker push titomiguelcosta/gobie-php81
+	docker push titomiguelcosta/gobie-php82
+	docker push titomiguelcosta/gobie-php83
 
 docker-ssh:
-	docker run --entrypoint /bin/bash -it titomiguelcosta/gobie-php81
+	docker run --entrypoint /bin/bash -it titomiguelcosta/gobie-php83
 
 php-cs-fixer:
 	php vendor/bin/php-cs-fixer fix src/
