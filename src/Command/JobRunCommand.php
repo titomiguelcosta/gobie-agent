@@ -25,14 +25,14 @@ class JobRunCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Run a job')
             ->addArgument('id', InputArgument::REQUIRED, 'ID of the job');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $id = (int) $input->getArgument('id');
         $data = $this->client->getJob($id);
@@ -40,6 +40,6 @@ class JobRunCommand extends Command
         $job = $this->jobManager->populate($id, $data);
         $this->jobManager->execute($job);
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

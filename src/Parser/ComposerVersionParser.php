@@ -6,9 +6,6 @@ use App\Lexer\ComposerVersionLexer;
 
 final class ComposerVersionParser
 {
-    /**
-     * @var ComposerVersionLexer
-     */
     private $lexer;
 
     /**

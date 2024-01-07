@@ -14,19 +14,10 @@ final class Task
     const STATUS_FAILED = 'failed';
     const STATUS_SUCCEEDED = 'succeeded';
 
-    /** @var int */
     private $id;
-
-    /** @var string */
     private $name;
-
-    /** @var string */
     private $command;
-
-    /** @var array|null */
     private $options;
-
-    /** @var null */
     private $process = null;
 
     public function __construct(int $id, string $name, string $command, ?array $options)
@@ -72,13 +63,6 @@ final class Task
         return array_key_exists('cwd', $this->options) && $this->options['cwd'];
     }
 
-    /**
-     * @param array $options
-     *
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
     public function getParsedCommand(array $metadata): string
     {
         $twig = new Environment(new ArrayLoader(['command' => $this->getCommand()]));

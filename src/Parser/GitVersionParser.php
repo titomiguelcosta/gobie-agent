@@ -6,9 +6,6 @@ use App\Lexer\GitVersionLexer;
 
 final class GitVersionParser
 {
-    /**
-     * @var GitVersionLexer
-     */
     private $lexer;
 
     /**
@@ -22,9 +19,6 @@ final class GitVersionParser
         $this->parse();
     }
 
-    /**
-     * @return string
-     */
     public function getVersion(): ?string
     {
         return $this->version;

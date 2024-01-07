@@ -27,12 +27,6 @@ final class BootstrapSubscriber implements EventSubscriberInterface
         $this->dateTime = $dateTime;
     }
 
-    /**
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     */
     public function cloneRepo(JobBootEvent $event): void
     {
         $job = $event->getJob();
@@ -85,10 +79,7 @@ final class BootstrapSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             JobEvents::BOOT_EVENT => [

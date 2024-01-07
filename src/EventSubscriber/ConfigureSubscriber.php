@@ -17,10 +17,7 @@ final class ConfigureSubscriber implements EventSubscriberInterface
         printf('Setting path for the job at: %s.%s', $metadata['path'], PHP_EOL);
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             JobEvents::BOOT_EVENT => ['configuration', 999],

@@ -12,27 +12,10 @@ use Symfony\Component\Process\Process;
 
 class TaskSubscriber implements EventSubscriberInterface
 {
-    /** @var Client */
-    private $client;
-
-    /** @var DateTime */
-    private $dateTime;
-
-    public function __construct(Client $client, DateTime $dateTime)
+    public function __construct(private Client $client, private DateTime $dateTime)
     {
-        $this->client = $client;
-        $this->dateTime = $dateTime;
     }
 
-    /**
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
     public function executeTasks(JobExecuteEvent $event): void
     {
         $metadata = $event->getMetadata();
@@ -77,10 +60,7 @@ class TaskSubscriber implements EventSubscriberInterface
         }
     }
 
-    /**
-     * @return array
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             JobEvents::EXECUTE_EVENT => 'executeTasks',

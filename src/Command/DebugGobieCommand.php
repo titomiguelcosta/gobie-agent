@@ -21,17 +21,17 @@ class DebugGobieCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Playground for the Gobies API');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->text($this->client->getJob(1));
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

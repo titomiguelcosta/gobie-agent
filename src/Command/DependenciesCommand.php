@@ -26,20 +26,20 @@ class DependenciesCommand extends Command
         $this->composer = $composer;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName(self::$defaultName)
             ->setDescription('Checks environment meets all the dependencies');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
         $this->checkApplication($this->git);
         $this->checkApplication($this->composer);
 
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function checkApplication(ApplicationInterface $app): ApplicationInterface
